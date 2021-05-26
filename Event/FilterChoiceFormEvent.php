@@ -12,7 +12,6 @@
 namespace MauticPlugin\MauticRecommenderBundle\Event;
 
 use Mautic\CoreBundle\Event\CommonEvent;
-use Symfony\Component\Form\FormBuilderInterface;
 
 class FilterChoiceFormEvent extends CommonEvent
 {

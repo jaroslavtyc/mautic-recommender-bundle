@@ -13,7 +13,6 @@ namespace MauticPlugin\MauticRecommenderBundle\Event;
 
 use Mautic\CoreBundle\Event\CommonEvent;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderToken;
-use Symfony\Component\Form\FormBuilderInterface;
 
 class FilterResultsEvent extends CommonEvent
 {

@@ -12,16 +12,14 @@
 namespace MauticPlugin\MauticRecommenderBundle\EventListener;
 
 use Mautic\CoreBundle\Event\TokenReplacementEvent;
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\DynamicContentBundle\DynamicContentEvents;
-use Mautic\DynamicContentBundle\Model\DynamicContentModel;
 use Mautic\NotificationBundle\NotificationEvents;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticFocusBundle\FocusEvents;
-use MauticPlugin\MauticFocusBundle\Model\FocusModel;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderTokenReplacer;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TokenReplacementSubscriber extends CommonSubscriber
+class TokenReplacementSubscriber implements EventSubscriberInterface
 {
     /**
      * @var RecommenderTokenReplacer
@@ -29,35 +27,17 @@ class TokenReplacementSubscriber extends CommonSubscriber
     private $recommenderTokenReplacer;
 
     /**
-     * @var DynamicContentModel
-     */
-    private $dynamicContentModel;
-
-    /**
-     * @var FocusModel
-     */
-    private $focusModel;
-
-    /**
      * @var IntegrationHelper
      */
     protected $integrationHelper;
 
-    /**
-     * @param RecommenderTokenReplacer $recommenderTokenReplacer
-     * @param DynamicContentModel      $dynamicContentModel
-     * @param FocusModel               $focusModel
-     */
     public function __construct(
         RecommenderTokenReplacer $recommenderTokenReplacer,
-        DynamicContentModel $dynamicContentModel,
-        FocusModel $focusModel,
         IntegrationHelper $integrationHelper
-    ) {
+    )
+    {
         $this->recommenderTokenReplacer = $recommenderTokenReplacer;
-        $this->dynamicContentModel      = $dynamicContentModel;
-        $this->focusModel               = $focusModel;
-        $this->integrationHelper        = $integrationHelper;
+        $this->integrationHelper = $integrationHelper;
     }
 
     /**
@@ -66,9 +46,9 @@ class TokenReplacementSubscriber extends CommonSubscriber
     public static function getSubscribedEvents()
     {
         return [
-            DynamicContentEvents::TOKEN_REPLACEMENT       => ['onDynamicContentTokenReplacement', 200],
-            FocusEvents::TOKEN_REPLACEMENT                => ['onFocusTokenReplacement', 200],
-            NotificationEvents::TOKEN_REPLACEMENT         => ['onNotificationTokenReplacement', 200],
+            DynamicContentEvents::TOKEN_REPLACEMENT => ['onDynamicContentTokenReplacement', 200],
+            FocusEvents::TOKEN_REPLACEMENT => ['onFocusTokenReplacement', 200],
+            NotificationEvents::TOKEN_REPLACEMENT => ['onNotificationTokenReplacement', 200],
         ];
     }
 
@@ -83,7 +63,7 @@ class TokenReplacementSubscriber extends CommonSubscriber
         }
 
         $clickthrough = $event->getClickthrough();
-        $leadId       = $clickthrough['lead'];
+        $leadId = $clickthrough['lead'];
         $this->recommenderTokenReplacer->getRecommenderToken()->setUserId($leadId);
         $event->setContent($this->recommenderTokenReplacer->replaceTokensFromContent($event->getContent()));
     }
@@ -102,7 +82,7 @@ class TokenReplacementSubscriber extends CommonSubscriber
         if (empty($clickthrough['focus_id']) || empty($clickthrough['lead'])) {
             return;
         }
-        $leadId       = $clickthrough['lead'];
+        $leadId = $clickthrough['lead'];
         $this->recommenderTokenReplacer->getRecommenderToken()->setUserId($leadId);
         $this->recommenderTokenReplacer->getRecommenderToken()->setContent($event->getContent());
         $event->setContent($this->recommenderTokenReplacer->getReplacedContent());

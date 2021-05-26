@@ -11,7 +11,6 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Api;
 
-use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\CoreBundle\Templating\Helper\VersionHelper;
 use Mautic\PageBundle\Model\TrackableModel;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
@@ -43,11 +42,11 @@ class RecommenderApi
     /**
      * TwilioApi constructor.
      *
-     * @param TrackableModel    $pageTrackableModel
+     * @param TrackableModel $pageTrackableModel
      * @param IntegrationHelper $integrationHelper
-     * @param Logger            $logger
-     * @param VersionHelper     $versionHelper
-     * @param Client            $client
+     * @param Logger $logger
+     * @param VersionHelper $versionHelper
+     * @param Client $client
      *
      * @internal param CoreParametersHelper $coreParametersHelper
      */
@@ -57,7 +56,8 @@ class RecommenderApi
         Logger $logger,
         VersionHelper $versionHelper,
         Client $client
-    ) {
+    )
+    {
         $this->logger = $logger;
         $this->client = $client;
 
@@ -71,7 +71,7 @@ class RecommenderApi
                 $keys = $_POST['integration_details']['apiKeys'];
             }
             if (empty($keys['database']) && empty($keys['secret_key'])) {
-                $keys['database']   = trim(getenv('d'));
+                $keys['database'] = trim(getenv('d'));
                 $keys['secret_key'] = trim(getenv('s'));
             }
         }
@@ -95,8 +95,8 @@ class RecommenderApi
 
         parent::__construct($pageTrackableModel);
         $this->integrationHelper = $integrationHelper;
-        $this->versionHelper     = $versionHelper;
-        $this->client            = $client;
+        $this->versionHelper = $versionHelper;
+        $this->client = $client;
     }
 
     /**

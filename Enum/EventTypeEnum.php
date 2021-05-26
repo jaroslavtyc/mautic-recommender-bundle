@@ -13,23 +13,14 @@ namespace MauticPlugin\MauticRecommenderBundle\Enum;
 
 use Mautic\CoreBundle\Helper\ArrayHelper;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EventTypeEnum extends AbstractType
 {
-    const DETAIL_VIEW    = 'detail_view';
+    public const DETAIL_VIEW = 'detail_view';
+    public const CART_ADDITIONS = 'cart_additions';
+    public const PURCHASE = 'purchase';
 
-    const CART_ADDITIONS = 'cart_additions';
-
-    const PURCHASE       = 'purchase';
-
-    /**
-     * @return array
-     */
-    public static function getTypes()
+    public static function getTypes(): array
     {
         return [
             self::DETAIL_VIEW,
@@ -38,24 +29,16 @@ class EventTypeEnum extends AbstractType
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function getChoices()
+    public static function getChoices(): array
     {
         return [
-            self::DETAIL_VIEW    => 'mautic.recommender.event.type.detail_view',
+            self::DETAIL_VIEW => 'mautic.recommender.event.type.detail_view',
             self::CART_ADDITIONS => 'mautic.recommender.event.type.cart_additions',
-            self::PURCHASE       => 'mautic.recommender.event.type.purchase',
+            self::PURCHASE => 'mautic.recommender.event.type.purchase',
         ];
     }
 
-    /**
-     * @param string|null $type
-     *
-     * @return mixed
-     */
-    public static function getChoice($type = null)
+    public static function getChoice(string $type = null)
     {
         return ArrayHelper::getValue($type, self::getChoices());
     }

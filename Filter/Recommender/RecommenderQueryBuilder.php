@@ -12,7 +12,7 @@
 namespace MauticPlugin\MauticRecommenderBundle\Filter\Recommender;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Connections\MasterSlaveConnection;
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\ORM\EntityManager;
 use Mautic\LeadBundle\Segment\RandomParameterName;
 use MauticPlugin\MauticRecommenderBundle\Entity\Recommender;
@@ -77,7 +77,7 @@ class RecommenderQueryBuilder
     {
         /** @var Connection $connection */
         $connection = $this->entityManager->getConnection();
-        if ($connection instanceof MasterSlaveConnection) {
+        if ($connection instanceof PrimaryReadReplicaConnection) {
             // Prefer a slave connection if available.
             $connection->connect('slave');
         }
@@ -113,7 +113,7 @@ class RecommenderQueryBuilder
                                ->setParameter('dateAdded', date('Y-m-d H:i:s', strtotime("-{$precision} weeks")))
                                ->setMaxResults($precision);
 
-                        $itemResult = $itemQB->execute()->fetchAll(\PDO::FETCH_COLUMN);
+                        $itemResult = $itemQB->execute()->fetchFirstColumn();
 
                         if (!empty($itemResult)) {
                             $contactQB = new QueryBuilder($connection);
@@ -129,7 +129,7 @@ class RecommenderQueryBuilder
                                ->setParameter('dateAdded', date('Y-m-d H:i:s', strtotime("-{$precision} weeks")))
                                ->setMaxResults($precision);
 
-                            $contactResult = $contactQB->execute()->fetchAll(\PDO::FETCH_COLUMN);
+                            $contactResult = $contactQB->execute()->fetchFirstColumn();
 
                             if (!empty($contactResult)) {
                                 $queryBuilder->andWhere($queryBuilder->expr()->in('l.lead_id', $contactResult));

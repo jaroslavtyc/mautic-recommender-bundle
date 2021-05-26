@@ -12,7 +12,6 @@
 namespace MauticPlugin\MauticRecommenderBundle\Event;
 
 use Mautic\CoreBundle\Event\CommonEvent;
-use Symfony\Component\Form\FormBuilderInterface;
 
 class SentEvent extends CommonEvent
 {
@@ -38,11 +37,11 @@ class SentEvent extends CommonEvent
      * @param      $options
      * @param bool $return
      */
-    public function __construct($apiRequest, $options, $return = false)
+    public function __construct($apiRequest, $options, bool $return = false)
     {
         $this->apiRequest = $apiRequest;
-        $this->options    = $options;
-        $this->return     = $return;
+        $this->options = $options;
+        $this->return = $return;
     }
 
     /**

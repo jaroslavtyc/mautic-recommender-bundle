@@ -11,20 +11,17 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\EventListener;
 
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\CoreBundle\Helper\BuilderTokenHelper;
-use Mautic\LeadBundle\LeadEvent;
+use Mautic\CoreBundle\Helper\BuilderTokenHelperFactory;
 use Mautic\LeadBundle\Tracker\ContactTracker;
 use Mautic\PageBundle\Event as Events;
 use Mautic\PageBundle\PageEvents;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecommenderBundle\Helper\RecommenderHelper;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderTokenReplacer;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class PageSubscriber.
- */
-class PageSubscriber extends CommonSubscriber
+class PageSubscriber implements EventSubscriberInterface
 {
     /**
      * @var RecommenderTokenReplacer
@@ -42,36 +39,42 @@ class PageSubscriber extends CommonSubscriber
     protected $integrationHelper;
 
     /**
+     * @var BuilderTokenHelperFactory
+     */
+    protected $builderTokenHelperFactory;
+
+    /**
      * PageSubscriber constructor.
      *
      * @param RecommenderTokenReplacer $recommenderTokenReplacer
-     * @param ContactTracker           $contactTracker
+     * @param ContactTracker $contactTracker
      */
     public function __construct(
         RecommenderTokenReplacer $recommenderTokenReplacer,
         ContactTracker $contactTracker,
-        IntegrationHelper $integrationHelper
-    ) {
+        IntegrationHelper $integrationHelper,
+        BuilderTokenHelperFactory $builderTokenHelperFactory
+    )
+    {
         $this->recommenderTokenReplacer = $recommenderTokenReplacer;
-        $this->contactTracker           = $contactTracker;
-        $this->integrationHelper        = $integrationHelper;
+        $this->contactTracker = $contactTracker;
+        $this->integrationHelper = $integrationHelper;
+        $this->builderTokenHelperFactory = $builderTokenHelperFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            PageEvents::PAGE_ON_BUILD   => ['onPageBuild', 0],
+            PageEvents::PAGE_ON_BUILD => ['onPageBuild', 0],
             PageEvents::PAGE_ON_DISPLAY => ['onPageDisplay', 200],
         ];
     }
 
     /**
      * Add forms to available page tokens.
-     *
-     * @param PageBuilderEvent $event
      */
     public function onPageBuild(Events\PageBuilderEvent $event)
     {
@@ -86,9 +89,6 @@ class PageSubscriber extends CommonSubscriber
         }
     }
 
-    /**
-     * @param PageDisplayEvent $event
-     */
     public function onPageDisplay(Events\PageDisplayEvent $event)
     {
         $integration = $this->integrationHelper->getIntegrationObject('Recommender');
@@ -96,8 +96,8 @@ class PageSubscriber extends CommonSubscriber
             return;
         }
 
-        $lead    = $this->contactTracker->getContact();
-        $leadId  = ($lead) ? $lead->getId() : null;
+        $lead = $this->contactTracker->getContact();
+        $leadId = ($lead) ? $lead->getId() : null;
         if ($leadId && $event->getPage()) {
             $this->recommenderTokenReplacer->getRecommenderToken()->setUserId($leadId);
             $this->recommenderTokenReplacer->getRecommenderToken()->setContent($event->getContent());

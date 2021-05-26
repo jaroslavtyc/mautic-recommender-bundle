@@ -1,8 +1,42 @@
 {
   "name": "kuzmany/mautic-recommender-bundle",
   "type": "mautic-plugin",
+  "description": "Products recommendation for an e-commerce",
   "require": {
-    "mautic/composer-plugin": "^1.0",
-    "halaxa/json-machine": "^0.3.0"
-  }
+    "php": ">=7.3 <7.5",
+    "ext-pdo": "*",
+    "ext-mbstring": "*",
+    "halaxa/json-machine": "^0.7.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "mautic/core": "3.3.*"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/mautic/BazingaOAuthServerBundle.git"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "mautic/grapejs-builder",
+        "version": "1.0-RC4",
+        "type": "mautic-plugin",
+        "source": {
+          "url": "https://github.com/mautic/plugin-grapesjs-builder.git",
+          "type": "git",
+          "reference": "1.0-RC4"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "GrapesJsBuilderBundle"
+        }
+      }
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

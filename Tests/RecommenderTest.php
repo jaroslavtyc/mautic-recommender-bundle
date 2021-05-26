@@ -8,7 +8,7 @@
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-namespace MauticPlugin\MauticRecommenderBundle\Tests\Recommendere;
+namespace MauticPlugin\MauticRecommenderBundle\Tests\Recommender;
 
 use Mautic\CoreBundle\Test\AbstractMauticTestCase;
 use Mautic\LeadBundle\Entity\Lead;
@@ -16,7 +16,7 @@ use Mautic\LeadBundle\Model\LeadModel;
 use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiCommands;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderToken;
 
-class RecommendereTest extends AbstractMauticTestCase
+class RecommenderTest extends AbstractMauticTestCase
 {
     /**
      * @var RecommenderToken
@@ -38,11 +38,11 @@ class RecommendereTest extends AbstractMauticTestCase
      */
     private $leadInTest;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $this->leadModel        = $this->container->get('mautic.lead.model.lead');
-        $this->apiCommand       = $this->container->get('mautic.recommender.service.api.commands');
+        $this->leadModel = $this->container->get('mautic.lead.model.lead');
+        $this->apiCommand = $this->container->get('mautic.recommender.service.api.commands');
         $this->recommenderToken = $this->container->get('mautic.recommender.service.token');
     }
 
@@ -128,12 +128,12 @@ class RecommendereTest extends AbstractMauticTestCase
     {
         $leadEmail = 'kuzmany@gmail.com';
         $firstname = 'Testname';
-        $lastname  = 'Testlastname';
+        $lastname = 'Testlastname';
 
-        $leadFields              = [];
-        $leadFields['email']     = $leadEmail;
+        $leadFields = [];
+        $leadFields['email'] = $leadEmail;
         $leadFields['firstname'] = $firstname;
-        $leadFields['lastname']  = $lastname;
+        $leadFields['lastname'] = $lastname;
 
         return $this->leadModel->checkForDuplicateContact($leadFields);
     }
@@ -142,29 +142,29 @@ class RecommendereTest extends AbstractMauticTestCase
     {
         $leadEmail = 'rafoxesi4@loketa.com';
         $firstname = 'Testname';
-        $lastname  = 'Testlastname';
+        $lastname = 'Testlastname';
 
-        $leadFields              = [];
-        $leadFields['email']     = $leadEmail;
+        $leadFields = [];
+        $leadFields['email'] = $leadEmail;
         $leadFields['firstname'] = $firstname;
-        $leadFields['lastname']  = $lastname;
+        $leadFields['lastname'] = $lastname;
 
         return $leadFields;
     }
 
     private function getItems()
     {
-        $items              = [];
-        $items[0]['id']     = 1;
-        $items[0]['name']   = 'Test product';
-        $items[0]['url']    = 'http://recommender.com';
-        $items[0]['price']  = '99';
+        $items = [];
+        $items[0]['id'] = 1;
+        $items[0]['name'] = 'Test product';
+        $items[0]['url'] = 'http://recommender.com';
+        $items[0]['price'] = '99';
         $items[0]['amount'] = '2';
         $items[0]['profit'] = '19';
 
-        $items[1]['id']     = 2;
-        $items[1]['name']   = 'Test product 2';
-        $items[1]['price']  = '10';
+        $items[1]['id'] = 2;
+        $items[1]['name'] = 'Test product 2';
+        $items[1]['price'] = '10';
         $items[1]['amount'] = '2';
         $items[1]['profit'] = '3';
 

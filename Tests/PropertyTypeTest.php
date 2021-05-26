@@ -10,14 +10,16 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Tests;
 
+use MauticPlugin\MauticRecommenderBundle\Api\Client\Client;
 use MauticPlugin\MauticRecommenderBundle\Api\Client\Request\AddDetailView;
+use PHPUnit\Framework\TestCase;
 
-class PropertyTypeTest extends \PHPUnit_Framework_TestCase
+class PropertyTypeTest extends TestCase
 {
     public function testGetPropertyType()
     {
         $clientMock = $this->createMock(Client::class);
-        $class      = new AddDetailView($clientMock);
+        $class = new AddDetailView($clientMock);
         $this->assertEquals($class->getPropertyType('13749'), 'int');
         $this->assertEquals($class->getPropertyType('Testet string'), 'string');
         $this->assertEquals($class->getPropertyType('2018-09-01 11:11:11'), 'datetime');

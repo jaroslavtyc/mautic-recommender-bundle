@@ -13,6 +13,8 @@ namespace MauticPlugin\MauticRecommenderBundle\DTO;
 
 class InputOptionsDTO
 {
+    public $forceValue;
+
     public function __construct(array $options)
     {
         $this->forceValue = $options['force-value'] ?? null;

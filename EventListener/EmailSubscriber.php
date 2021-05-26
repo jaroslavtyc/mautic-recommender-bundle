@@ -11,19 +11,19 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\EventListener;
 
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
-use Mautic\CoreBundle\Helper\BuilderTokenHelper;
+use Mautic\CoreBundle\Helper\BuilderTokenHelperFactory;
 use Mautic\EmailBundle\EmailEvents;
 use Mautic\EmailBundle\Event\EmailBuilderEvent;
 use Mautic\EmailBundle\Event\EmailSendEvent;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecommenderBundle\Helper\RecommenderHelper;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderTokenReplacer;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class EmailSubscriber.
  */
-class EmailSubscriber extends CommonSubscriber
+class EmailSubscriber implements EventSubscriberInterface
 {
     /**
      * @var RecommenderHelper
@@ -41,29 +41,28 @@ class EmailSubscriber extends CommonSubscriber
     protected $integrationHelper;
 
     /**
-     * EmailSubscriber constructor.
-     *
-     * @param RecommenderHelper        $recommenderHelper
-     * @param RecommenderTokenReplacer $recommenderTokenReplacer
+     * @var BuilderTokenHelperFactory
      */
+    protected $builderTokenHelperFactory;
+
     public function __construct(
         RecommenderHelper $recommenderHelper,
         RecommenderTokenReplacer $recommenderTokenReplacer,
-        IntegrationHelper $integrationHelper
-    ) {
-        $this->recommenderHelper        = $recommenderHelper;
+        IntegrationHelper $integrationHelper,
+        BuilderTokenHelperFactory $builderTokenHelperFactory
+    )
+    {
+        $this->recommenderHelper = $recommenderHelper;
         $this->recommenderTokenReplacer = $recommenderTokenReplacer;
-        $this->integrationHelper        = $integrationHelper;
+        $this->integrationHelper = $integrationHelper;
+        $this->builderTokenHelperFactory = $builderTokenHelperFactory;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            EmailEvents::EMAIL_ON_BUILD   => ['onPageBuild', 0],
-            EmailEvents::EMAIL_ON_SEND    => ['onEmailGenerate', 0],
+            EmailEvents::EMAIL_ON_BUILD => ['onPageBuild', 0],
+            EmailEvents::EMAIL_ON_SEND => ['onEmailGenerate', 0],
             EmailEvents::EMAIL_ON_DISPLAY => ['onEmailDisplay', 0],
         ];
     }
@@ -81,7 +80,7 @@ class EmailSubscriber extends CommonSubscriber
         }
 
         if ($event->tokensRequested(RecommenderHelper::$recommenderRegex)) {
-            $tokenHelper = new BuilderTokenHelper($this->factory, 'recommender');
+            $tokenHelper = $this->builderTokenHelperFactory->getBuilderTokenHelper('recommender');
             $event->addTokensFromHelper($tokenHelper, RecommenderHelper::$recommenderRegex, 'name', 'id', true);
         }
     }

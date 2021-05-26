@@ -11,38 +11,42 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\EventListener;
 
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Mautic\LeadBundle\Event\LeadTimelineEvent;
 use Mautic\LeadBundle\LeadEvents;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecommenderBundle\Entity\EventLog;
 use MauticPlugin\MauticRecommenderBundle\Entity\EventLogRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * Class LeadSubscriber.
- */
-class LeadSubscriber extends CommonSubscriber
+class LeadSubscriber implements EventSubscriberInterface
 {
     /**
      * @var integrationHelper
      */
     protected $integrationHelper;
-
     /**
-     * LeadSubscriber constructor.
-     *
-     * @param FormModel $formModel
-     * @param PageModel $pageModel
+     * @var EntityManagerInterface
      */
-    public function __construct(IntegrationHelper $integrationHelper)
+    private $entityManager;
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    public function __construct(
+        IntegrationHelper $integrationHelper,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator
+    )
     {
-        $this->integrationHelper      = $integrationHelper;
+        $this->integrationHelper = $integrationHelper;
+        $this->entityManager = $entityManager;
+        $this->translator = $translator;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             LeadEvents::TIMELINE_ON_GENERATE => ['onTimelineGenerate', 0],
@@ -61,12 +65,12 @@ class LeadSubscriber extends CommonSubscriber
             return;
         }
         $integrationSettings = $integration->getIntegrationSettings();
-        if (!$integration || $integrationSettings->getIsPublished() === false) {
+        if ($integrationSettings->getIsPublished() === false) {
             return;
         }
 
         // Set available event types
-        $eventTypeKey  = 'recommender.event';
+        $eventTypeKey = 'recommender.event';
         $eventTypeName = $this->translator->trans('mautic.plugin.recommender.event.timeline_event');
         $event->addEventType($eventTypeKey, $eventTypeName);
 
@@ -75,8 +79,8 @@ class LeadSubscriber extends CommonSubscriber
         }
 
         /** @var EventLogRepository $eventLogRepository */
-        $eventLogRepository = $this->em->getRepository('MauticRecommenderBundle:EventLog');
-        $rows               = $eventLogRepository->getTimeLineEvents($event->getLead(), $event->getQueryOptions());
+        $eventLogRepository = $this->entityManager->getRepository('MauticRecommenderBundle:EventLog');
+        $rows = $eventLogRepository->getTimeLineEvents($event->getLead(), $event->getQueryOptions());
 
         // Add total to counter
         $event->addToCounter($eventTypeKey, $rows);
@@ -85,34 +89,29 @@ class LeadSubscriber extends CommonSubscriber
             // Add the submissions to the event array
             foreach ($rows['results'] as $row) {
                 /** @var EventLog $eventLogEntity */
-                $eventLogEntity   = $eventLogRepository->getEntity($row['id']);
+                $eventLogEntity = $eventLogRepository->getEntity($row['id']);
                 $event->addEvent(
                     [
-                        'event'           => $eventTypeKey,
-                        'eventId'         => $eventTypeKey.$row['id'],
-                        'eventLabel'      => $this->getLabel($eventLogEntity),
-                        'eventType'       => $eventTypeName,
-                        'timestamp'       => $row['date_added'],
-                        'icon'            => 'fa-shopping-bag',
-                        'contactId'       => $row['lead_id'],
+                        'event' => $eventTypeKey,
+                        'eventId' => $eventTypeKey . $row['id'],
+                        'eventLabel' => $this->getLabel($eventLogEntity),
+                        'eventType' => $eventTypeName,
+                        'timestamp' => $row['date_added'],
+                        'icon' => 'fa-shopping-bag',
+                        'contactId' => $row['lead_id'],
                     ]
                 );
             }
         }
     }
 
-    /**
-     * @param EventLog $eventLogEntity
-     *
-     * @return string
-     */
-    private function getLabel(EventLog $eventLogEntity)
+    private function getLabel(EventLog $eventLogEntity): string
     {
         return $this->translator->trans(
             'mautic.plugin.recommender.event.timeline_event.label',
             [
                 '%event_name%' => $eventLogEntity->getEvent() ? $eventLogEntity->getEvent()->getName() : 'deleted',
-                '%item_id%'    => $eventLogEntity->getItem() ? $eventLogEntity->getItem()->getId() : 'deleted',
+                '%item_id%' => $eventLogEntity->getItem() ? $eventLogEntity->getItem()->getId() : 'deleted',
             ]
         );
     }

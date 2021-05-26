@@ -2,10 +2,10 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Command;
 
+use JsonMachine\JsonMachine;
 use Mautic\CoreBundle\Translation\Translator;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiCommands;
-use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiUserItemsInteractions;
 use MauticPlugin\MauticRecommenderBundle\Events\Processor;
 use MauticPlugin\MauticRecommenderBundle\Helper\RecommenderHelper;
 use MauticPlugin\MauticRecommenderBundle\Integration\RecommenderIntegration;
@@ -40,13 +40,13 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
                 '--type',
                 '-t',
                 InputOption::VALUE_REQUIRED,
-                'Type options: '.implode(', ', $this->getTypes()),
+                'Type options: ' . implode(', ', $this->getTypes()),
                 null
             )->addOption(
                 '--file',
                 '-f',
                 InputOption::VALUE_OPTIONAL,
-                'JSON file to import for types for '.implode(', ', $this->getActions())
+                'JSON file to import for types for ' . implode(', ', $this->getActions())
             );
         $this->addOption(
             '--batch-limit',
@@ -74,16 +74,16 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var IntegrationHelper $integrationHelper */
-        $integrationHelper      = $this->getContainer()->get('mautic.helper.integration');
-        $integrationObject      = $integrationHelper->getIntegrationObject('Recommender');
-        $integrationSettings    = $integrationObject->getIntegrationSettings();
-        $featureSettings        = $integrationSettings->getFeatureSettings();
+        $integrationHelper = $this->getContainer()->get('mautic.helper.integration');
+        $integrationObject = $integrationHelper->getIntegrationObject('Recommender');
+        $integrationSettings = $integrationObject->getIntegrationSettings();
+        $featureSettings = $integrationSettings->getFeatureSettings();
 
         /** @var Translator $translator */
         $translator = $this->getContainer()->get('translator');
 
         if (!$integrationSettings->getIsPublished()) {
-            return $output->writeln('<info>'.$translator->trans('mautic.plugin.recommender.disabled').'</info>');
+            return $output->writeln('<info>' . $translator->trans('mautic.plugin.recommender.disabled') . '</info>');
         }
 
         /** @var RecommenderHelper $recommenderHelper */
@@ -94,10 +94,10 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
         if (empty($type)) {
             return $output->writeln(
                 sprintf(
-                    '<error>ERROR:</error> <info>'.$translator->trans(
+                    '<error>ERROR:</error> <info>' . $translator->trans(
                         'mautic.plugin.recommender.command.type.required',
                         ['%types' => implode(', ', $this->getTypes())]
-                    ).'</info>'
+                    ) . '</info>'
                 )
             );
         }
@@ -105,10 +105,10 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
         if (!in_array($type, $this->getTypes())) {
             return $output->writeln(
                 sprintf(
-                    '<error>ERROR:</error> <info>'.$translator->trans(
+                    '<error>ERROR:</error> <info>' . $translator->trans(
                         'mautic.plugin.recommender.command.bad.type',
                         ['%type' => $type, '%types' => implode(', ', $this->getTypes())]
-                    ).'</info>'
+                    ) . '</info>'
                 )
             );
         }
@@ -133,7 +133,7 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
         if (!in_array($type, $this->getTypes()) && empty($file)) {
             return $output->writeln(
                 sprintf(
-                    '<error>ERROR:</error> <info>'.$translator->trans(
+                    '<error>ERROR:</error> <info>' . $translator->trans(
                         'mautic.plugin.recommender.command.option.required',
                         ['%file' => 'file', '%actions' => implode(', ', $this->getActions())]
                     )
@@ -145,19 +145,19 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
             if (empty($file)) {
                 return $output->writeln(
                     sprintf(
-                        '<error>ERROR:</error> <info>'.$translator->trans(
+                        '<error>ERROR:</error> <info>' . $translator->trans(
                             'mautic.plugin.recommender.command.file.required'
                         )
                     )
                 );
             }
 
-            $items = \JsonMachine\JsonMachine::fromFile($file);
+            $items = JsonMachine::fromFile($file);
 
             if (empty($items) || ![$items]) {
                 return $output->writeln(
                     sprintf(
-                        '<error>ERROR:</error> <info>'.$translator->trans(
+                        '<error>ERROR:</error> <info>' . $translator->trans(
                             'mautic.plugin.recommender.command.json.fail',
                             ['%file' => $file]
                         )
@@ -194,7 +194,7 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
             case 'events':
                 /** @var Processor $eventProcessor */
                 $eventProcessor = $this->getContainer()->get('mautic.recommender.events.processor');
-                $counter        = 0;
+                $counter = 0;
                 foreach ($items as $item) {
                     try {
                         $eventProcessor->process($item);
@@ -203,7 +203,7 @@ class PushDataToRecommenderCommand extends ContainerAwareCommand
                         $output->writeln($e->getMessage());
                     }
                 }
-                $output->writeln('Imported '.$counter.' events');
+                $output->writeln('Imported ' . $counter . ' events');
                 break;
         }
     }

@@ -32,16 +32,9 @@ class FilterFactory
      */
     private $schemaCache;
 
-    /**
-     * SegmentFilterFactory constructor.
-     *
-     * @param ContainerInterface      $container
-     * @param TableSchemaColumnsCache $schemaCache
-     * @param Choices                 $segmentChoices
-     */
     public function __construct(ContainerInterface $container, TableSchemaColumnsCache $schemaCache)
     {
-        $this->container   = $container;
+        $this->container = $container;
         $this->schemaCache = $schemaCache;
     }
 
@@ -54,10 +47,10 @@ class FilterFactory
     {
         $contactSegmentFilterCrate = new ContactSegmentFilterCrate($filter);
         if ($contactSegmentFilterCrate->isDateType()) {
-            $decorator2                = $this->container->get(
+            $decorator2 = $this->container->get(
                 'mautic.lead.model.lead_segment.decorator.date.optionFactory'
             )->getDateOption($contactSegmentFilterCrate);
-            $filter['filter']          = $decorator2->getParameterValue($contactSegmentFilterCrate);
+            $filter['filter'] = $decorator2->getParameterValue($contactSegmentFilterCrate);
             $contactSegmentFilterCrate = new ContactSegmentFilterCrate($filter);
         }
 

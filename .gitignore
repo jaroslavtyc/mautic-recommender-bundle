@@ -1,0 +1,6 @@
+/app
+/components
+/plugins
+/vendor
+/composer.lock
+/plugins.json

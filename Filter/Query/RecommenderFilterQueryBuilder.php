@@ -29,9 +29,10 @@ class RecommenderFilterQueryBuilder extends BaseFilterQueryBuilder
         }
         foreach ($parameters as $parameter) {
             $parameterValue = array_shift($filterParameters);
-            $type           = $this->transformType($type, $parameterValue);
+            $type = $this->transformType($type, $parameterValue);
             $queryBuilder->setParameter($parameter, $parameterValue, $type);
         }
+        return null;
     }
 
     /**
@@ -39,26 +40,20 @@ class RecommenderFilterQueryBuilder extends BaseFilterQueryBuilder
      *
      * @return string
      */
-    private function transformType($type, &$parameter)
+    private function transformType($type, &$parameter): string
     {
         switch ($type) {
             case 'select':
                 return 'string';
-            break;
             case 'bool':
-                $parameter = (bool) $parameter;
-
+                $parameter = (bool)$parameter;
                 return 'boolean';
-            break;
             case 'int':
             case 'number':
-                $parameter = (int) $parameter;
-
+                $parameter = (int)$parameter;
                 return 'integer';
-                break;
             default:
-                return  $type;
-                break;
+                return $type;
         }
     }
 }
