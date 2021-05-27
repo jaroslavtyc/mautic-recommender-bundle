@@ -4,24 +4,17 @@ namespace MauticPlugin\MauticRecommenderBundle\Integration;
 
 use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use Mautic\PluginBundle\Integration\AbstractIntegration;
-use MauticPlugin\MauticRecommenderBundle\Form\Type\ListTemplateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 
 class RecommenderIntegration extends AbstractIntegration
 {
-    const NAME = 'Recommender';
-    const IMPORT_TIMEOUT = '-1 day';
-    const IMPORT_BATCH = 100;
-
-    /**
-     * RecommenderIntegration constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    public const NAME = 'Recommender';
+    public const IMPORT_TIMEOUT = '-1 day';
+    public const IMPORT_BATCH = 100;
 
     /**
      * {@inheritdoc}
@@ -67,7 +60,7 @@ class RecommenderIntegration extends AbstractIntegration
     public function getFormSettings()
     {
         return [
-            'requires_callback'      => false,
+            'requires_callback' => false,
             'requires_authorization' => false,
         ];
     }
@@ -83,21 +76,21 @@ class RecommenderIntegration extends AbstractIntegration
     }
 
     /**
-     * @param \Mautic\PluginBundle\Integration\Form|FormBuilder $builder
-     * @param array                                             $data
-     * @param string                                            $formArea
+     * @param FormBuilder|Form $builder
+     * @param array $data
+     * @param string $formArea
      */
     public function appendToForm(&$builder, $data, $formArea)
     {
-        if ($formArea == 'features') {
+        if ($formArea === 'features') {
             $builder->add(
                 'currency',
                 TextType::class,
                 [
-                    'label'      => 'mautic.plugin.recommender.form.currency',
+                    'label' => 'mautic.plugin.recommender.form.currency',
                     'label_attr' => ['class' => 'control-label'],
-                    'attr'       => [
-                        'class'        => 'form-control',
+                    'attr' => [
+                        'class' => 'form-control',
                     ],
                     'required' => false,
                 ]
@@ -108,7 +101,7 @@ class RecommenderIntegration extends AbstractIntegration
                 YesNoButtonGroupType::class,
                 [
                     'label' => 'mautic.plugin.recommender.form.testbench',
-                    'attr'  => [
+                    'attr' => [
                         'tooltip' => 'mautic.plugin.recommender.form.testbench.tooltip',
                     ],
                     'required' => false,
@@ -118,13 +111,13 @@ class RecommenderIntegration extends AbstractIntegration
                 'items_import_url',
                 UrlType::class,
                 [
-                    'label'      => 'mautic.plugin.recommender.form.items_import_url',
+                    'label' => 'mautic.plugin.recommender.form.items_import_url',
                     'label_attr' => ['class' => 'control-label'],
-                    'attr'       => [
-                        'class'        => 'form-control',
-                        'tooltip'      => 'mautic.plugin.recommender.form.items_import_url.tooltip',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'tooltip' => 'mautic.plugin.recommender.form.items_import_url.tooltip',
                     ],
-                    'required' => false
+                    'required' => false,
                 ]
             );
 
@@ -132,13 +125,13 @@ class RecommenderIntegration extends AbstractIntegration
                 'events_import_url',
                 UrlType::class,
                 [
-                    'label'      => 'mautic.plugin.recommender.form.events_import_url',
+                    'label' => 'mautic.plugin.recommender.form.events_import_url',
                     'label_attr' => ['class' => 'control-label'],
-                    'attr'       => [
-                        'class'        => 'form-control',
-                        'tooltip'      => 'mautic.plugin.recommender.form.events_import_url.tooltip',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'tooltip' => 'mautic.plugin.recommender.form.events_import_url.tooltip',
                     ],
-                    'required' => false
+                    'required' => false,
                 ]
             );
 
@@ -146,14 +139,14 @@ class RecommenderIntegration extends AbstractIntegration
                 'batch_limit',
                 NumberType::class,
                 [
-                    'label'      => 'mautic.plugin.recommender.form.batch_limit',
+                    'label' => 'mautic.plugin.recommender.form.batch_limit',
                     'label_attr' => ['class' => 'control-label'],
-                    'attr'       => [
-                        'class'        => 'form-control',
-                        'tooltip'      => 'mautic.plugin.recommender.form.batch_limit.tooltip',
-                        'placeholder'  => self::IMPORT_BATCH,
+                    'attr' => [
+                        'class' => 'form-control',
+                        'tooltip' => 'mautic.plugin.recommender.form.batch_limit.tooltip',
+                        'placeholder' => self::IMPORT_BATCH,
                     ],
-                    'required' => false
+                    'required' => false,
                 ]
             );
 
@@ -161,14 +154,14 @@ class RecommenderIntegration extends AbstractIntegration
                 'timeout',
                 TextType::class,
                 [
-                    'label'      => 'mautic.plugin.recommender.form.timeout',
+                    'label' => 'mautic.plugin.recommender.form.timeout',
                     'label_attr' => ['class' => 'control-label'],
-                    'attr'       => [
-                        'class'        => 'form-control',
-                        'tooltip'      => 'mautic.plugin.recommender.form.timeout.tooltip',
-                        'placeholder'  => self::IMPORT_TIMEOUT,
+                    'attr' => [
+                        'class' => 'form-control',
+                        'tooltip' => 'mautic.plugin.recommender.form.timeout.tooltip',
+                        'placeholder' => self::IMPORT_TIMEOUT,
                     ],
-                    'required' => false
+                    'required' => false,
                 ]
             );
         }
@@ -179,9 +172,9 @@ class RecommenderIntegration extends AbstractIntegration
      *
      * @param $section
      *
-     * @return string
+     * @return array
      */
-    public function getFormNotes($section)
+    public function getFormNotes($section): array
     {
         if ('features' === $section) {
             return ['mautic.plugin.recommender.features.notes', 'warning'];
