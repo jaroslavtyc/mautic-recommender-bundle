@@ -67,7 +67,6 @@ class ListEventsType extends AbstractType
             'expanded'    => false,
             'multiple'    => false,
             'required'    => false,
-            'empty_value' => '',
         ]);
     }
 

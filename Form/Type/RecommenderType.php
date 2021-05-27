@@ -227,7 +227,6 @@ class RecommenderType extends AbstractType
                 'multiple' => false,
                 'label' => 'mautic.plugin.recommender.form.recommendations.type',
                 'label_attr' => ['class' => ''],
-                'empty_value' => '',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(
@@ -300,7 +299,6 @@ class RecommenderType extends AbstractType
                 'multiple' => false,
                 'label' => 'mautic.plugin.recommender.form.filter_target',
                 'label_attr' => ['class' => ''],
-                //'empty_value' => 'reflective',
                 'required' => true,
                 'constraints' => [
                     new NotBlank(

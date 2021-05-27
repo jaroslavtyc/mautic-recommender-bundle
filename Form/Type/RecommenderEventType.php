@@ -82,7 +82,6 @@ class RecommenderEventType extends AbstractType
                 'multiple' => false,
                 'label' => 'mautic.recommender.form.event.type',
                 'label_attr' => ['class' => ''],
-                'empty_value' => '',
                 'required' => true,
             ]
         );

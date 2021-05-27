@@ -43,7 +43,6 @@ class RecommenderPropertiesType extends AbstractType
                 'multiple'    => false,
                 'label'       => 'mautic.recommender.form.columns',
                 'label_attr'  => ['class' => ''],
-                'empty_value' => false,
                 'required'    => true,
                 'data'        => isset($options['data']['columns']) ? $options['data']['columns'] : 3,
                 'constraints' => [
@@ -97,7 +96,6 @@ class RecommenderPropertiesType extends AbstractType
                     'class'        => 'form-control',
                 ],
                 'required'    => false,
-                'empty_value' => false,
             ]
         );
 

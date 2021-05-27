@@ -56,7 +56,6 @@ class RecommenderTableOrderType extends AbstractType
             'multiple'    => false,
             'label'       => 'mautic.report.report.label.filtercolumn',
             'label_attr'  => ['class' => 'control-label'],
-            'empty_value' => false,
             'required'    => false,
             'attr'        => [
                 'class' => 'form-control filter-columns',
@@ -73,7 +72,6 @@ class RecommenderTableOrderType extends AbstractType
             'multiple'    => false,
             'label'       => 'mautic.core.order',
             'label_attr'  => ['class' => 'control-label'],
-            'empty_value' => false,
             'required'    => false,
             'attr'        => [
                 'class' => 'form-control not-chosen',
@@ -86,7 +84,6 @@ class RecommenderTableOrderType extends AbstractType
             'multiple'    => false,
             'label'       => 'mautic.report.function',
             'label_attr'  => ['class' => 'control-label'],
-            'empty_value' => false,
             'required'    => true,
             'attr'        => [
                 'class' => 'form-control not-chosen',
@@ -154,7 +151,6 @@ class RecommenderTableOrderType extends AbstractType
             'multiple'    => false,
             'label'       => 'mautic.report.function',
             'label_attr'  => ['class' => 'control-label'],
-            'empty_value' => false,
             'required'    => true,
             'attr'        => [
                 'class' => 'form-control not-chosen',

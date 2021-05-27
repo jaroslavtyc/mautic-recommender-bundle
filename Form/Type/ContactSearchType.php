@@ -33,7 +33,6 @@ class ContactSearchType extends AbstractType
                     'class'    => 'form-control',
                     'onchange' => 'Mautic.reloadExample(this)',
                 ],
-                'empty_value' => '',
                 'constraints' => [
                     new NotBlank(
                         [
