@@ -16,8 +16,10 @@ use Mautic\CoreBundle\Model\FormModel;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplate;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplateRepository;
 use MauticPlugin\MauticRecommenderBundle\Event\RecommenderEvent;
+use MauticPlugin\MauticRecommenderBundle\Form\Type\RecommenderTemplatesType;
 use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class TemplateModel extends FormModel implements AjaxLookupModelInterface
@@ -62,7 +64,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
      * {@inheritdoc}
      *
      * @param       $entity
-     * @param       $formFactory
+     * @param FormFactory $formFactory
      * @param null $action
      * @param array $options
      *
@@ -80,7 +82,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
             $options['action'] = $action;
         }
 
-        return $formFactory->create('recommender_templates', $entity, $options);
+        return $formFactory->create(RecommenderTemplatesType::class, $entity, $options);
     }
 
     /**
