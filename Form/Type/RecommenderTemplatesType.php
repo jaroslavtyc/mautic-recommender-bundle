@@ -13,6 +13,7 @@ namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
 use Mautic\CoreBundle\Form\Type\ButtonGroupType;
 use Mautic\CoreBundle\Form\Type\FormButtonsType;
+use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -134,7 +135,10 @@ class RecommenderTemplatesType extends AbstractType
             ]
         );
 
-        $builder->add('isPublished', 'yesno_button_group');
+        $builder->add(
+            'isPublished',
+            YesNoButtonGroupType::class
+        );
 
         if (!empty($options['update_select'])) {
             $builder->add(
