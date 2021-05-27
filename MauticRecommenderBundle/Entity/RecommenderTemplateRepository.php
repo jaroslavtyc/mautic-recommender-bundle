@@ -46,18 +46,18 @@ class RecommenderTemplateRepository extends CommonRepository
      */
     protected function addSearchCommandWhereClause($q, $filter)
     {
-        list($expr, $parameters) = $this->addStandardSearchCommandWhereClause($q, $filter);
+        [$expr, $parameters] = $this->addStandardSearchCommandWhereClause($q, $filter);
         if ($expr) {
             return [$expr, $parameters];
         }
 
-        list($expr, $parameters) = parent::addSearchCommandWhereClause($q, $filter);
+        [$expr, $parameters] = parent::addSearchCommandWhereClause($q, $filter);
         if ($expr) {
             return [$expr, $parameters];
         }
 
-        $command         = $filter->command;
-        $unique          = $this->generateRandomParameterName();
+        $command = $filter->command;
+        $unique = $this->generateRandomParameterName();
         $returnParameter = false; //returning a parameter that is not used will lead to a Doctrine error
 
         if ($expr && $filter->not) {
@@ -67,7 +67,7 @@ class RecommenderTemplateRepository extends CommonRepository
         if (!empty($forceParameters)) {
             $parameters = $forceParameters;
         } elseif ($returnParameter) {
-            $string     = ($filter->strict) ? $filter->string : "%{$filter->string}%";
+            $string = ($filter->strict) ? $filter->string : "%{$filter->string}%";
             $parameters = ["$unique" => $string];
         }
 
@@ -88,31 +88,25 @@ class RecommenderTemplateRepository extends CommonRepository
         return array_merge($commands, parent::getSearchCommands());
     }
 
-    /**
-     * @return string
-     */
-    protected function getDefaultOrder()
+    protected function getDefaultOrder(): array
     {
         return [
             ['e.name', 'ASC'],
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getTableAlias()
+    public function getTableAlias(): string
     {
         return 'e';
     }
 
     /**
      * @param string $search
-     * @param int    $limit
-     * @param int    $start
-     * @param bool   $viewOther
-     * @param bool   $topLevel
-     * @param array  $ignoreIds
+     * @param int $limit
+     * @param int $start
+     * @param bool $viewOther
+     * @param bool $topLevel
+     * @param array $ignoreIds
      *
      * @return array
      */
@@ -125,10 +119,10 @@ class RecommenderTemplateRepository extends CommonRepository
             if (is_array($search)) {
                 $search = array_map('intval', $search);
                 $q->andWhere($q->expr()->in('e.id', ':search'))
-                  ->setParameter('search', $search);
+                    ->setParameter('search', $search);
             } else {
                 $q->andWhere($q->expr()->like('e.name', ':search'))
-                  ->setParameter('search', "%{$search}%");
+                    ->setParameter('search', "%{$search}%");
             }
         }
 

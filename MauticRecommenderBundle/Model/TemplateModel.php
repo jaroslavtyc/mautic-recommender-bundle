@@ -11,19 +11,8 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Model;
 
-use Doctrine\DBAL\Query\QueryBuilder;
-use Mautic\CoreBundle\Helper\Chart\ChartQuery;
-use Mautic\CoreBundle\Helper\Chart\LineChart;
 use Mautic\CoreBundle\Model\AjaxLookupModelInterface;
 use Mautic\CoreBundle\Model\FormModel;
-use Mautic\CoreBundle\Model\TranslationModelTrait;
-use Mautic\CoreBundle\Model\VariantModelTrait;
-use Mautic\LeadBundle\Entity\Lead;
-use MauticPlugin\MauticMTCPilotBundle\Entity\MTCPilot;
-use MauticPlugin\MauticMTCPilotBundle\Entity\MTCPilotRepository;
-use MauticPlugin\MauticMTCPilotBundle\Entity\Stat;
-use MauticPlugin\MauticMTCPilotBundle\Event\MTCPilotEvent;
-use MauticPlugin\MauticMTCPilotBundle\MTCPilotEvents;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplate;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplateRepository;
 use MauticPlugin\MauticRecommenderBundle\Event\RecommenderEvent;
@@ -33,12 +22,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class TemplateModel extends FormModel implements AjaxLookupModelInterface
 {
-    /**
-     * Retrieve the permissions base.
-     *
-     * @return string
-     */
-    public function getPermissionBase()
+    public function getPermissionBase(): string
     {
         return 'recommender:recommender';
     }
@@ -48,7 +32,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
      *
      * @return RecommenderTemplateRepository
      */
-    public function getRepository()
+    public function getRepository(): RecommenderTemplateRepository
     {
         /** @var RecommenderTemplateRepository $repo */
         $repo = $this->em->getRepository('MauticRecommenderBundle:RecommenderTemplate');
@@ -65,7 +49,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
      *
      * @return null|RecommenderTemplate
      */
-    public function getEntity($id = null)
+    public function getEntity($id = null): ?RecommenderTemplate
     {
         if ($id === null) {
             return new RecommenderTemplate();
@@ -79,7 +63,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
      *
      * @param       $entity
      * @param       $formFactory
-     * @param null  $action
+     * @param null $action
      * @param array $options
      *
      * @return mixed
@@ -133,7 +117,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
         }
 
         if ($this->dispatcher->hasListeners($name)) {
-            if (empty($event)) {
+            if (!$event) {
                 $event = new RecommenderEvent($entity, $isNew);
                 $event->setEntityManager($this->em);
             }
@@ -141,17 +125,16 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
             $this->dispatcher->dispatch($name, $event);
 
             return $event;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
      * @param        $type
      * @param string $filter
-     * @param int    $limit
-     * @param int    $start
-     * @param array  $options
+     * @param int $limit
+     * @param int $start
+     * @param array $options
      */
     public function getLookupResults($type, $filter = '', $limit = 10, $start = 0, $options = [])
     {
@@ -162,7 +145,7 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
                     $filter,
                     $limit,
                     $start,
-                    $this->security->isGranted($this->getPermissionBase().':viewother'),
+                    $this->security->isGranted($this->getPermissionBase() . ':viewother'),
                     isset($options['top_level']) ? $options['top_level'] : false,
                     isset($options['ignore_ids']) ? $options['ignore_ids'] : []
                 );

@@ -49,7 +49,7 @@ class RecommenderTemplateController extends AbstractStandardFormController
      */
     protected function getSessionBase($objectId = null)
     {
-        return 'recommender.template'.(($objectId) ? '.'.$objectId : '');
+        return 'recommender.template' . (($objectId) ? '.' . $objectId : '');
     }
 
     /**
@@ -71,7 +71,7 @@ class RecommenderTemplateController extends AbstractStandardFormController
     /**
      * @param $objectId
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function cloneAction($objectId)
     {
@@ -82,7 +82,7 @@ class RecommenderTemplateController extends AbstractStandardFormController
      * @param      $objectId
      * @param bool $ignorePost
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction($objectId, $ignorePost = false)
     {
@@ -92,7 +92,7 @@ class RecommenderTemplateController extends AbstractStandardFormController
     /**
      * @param int $page
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction($page = 1)
     {
@@ -100,7 +100,7 @@ class RecommenderTemplateController extends AbstractStandardFormController
     }
 
     /**
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction()
     {
@@ -112,7 +112,8 @@ class RecommenderTemplateController extends AbstractStandardFormController
         $entity,
         $nameMethod = 'getName',
         $groupMethod = 'getLanguage'
-    ) {
+    )
+    {
         return parent::getUpdateSelectParams($updateSelect, $entity, $nameMethod, '');
     }
 
@@ -124,16 +125,16 @@ class RecommenderTemplateController extends AbstractStandardFormController
     public function viewAction($objectId)
     {
         //set the page we came from
-        $page      = $this->get('session')->get('mautic.recommender.template.page', 1);
+        $page = $this->get('session')->get('mautic.recommender.template.page', 1);
         $returnUrl = $this->generateUrl('mautic_recommender_template_index', ['page' => $page]);
 
         return $this->postActionRedirect(
             [
-                'returnUrl'       => $returnUrl,
-                'viewParameters'  => ['page' => $page],
+                'returnUrl' => $returnUrl,
+                'viewParameters' => ['page' => $page],
                 'contentTemplate' => 'MauticRecommenderBundle:RecommenderTemplate:index',
                 'passthroughVars' => [
-                    'activeLink'    => '#mautic_recommender_template_index',
+                    'activeLink' => '#mautic_recommender_template_index',
                     'mauticContent' => 'recommenderTemplate',
                 ],
             ]
@@ -176,13 +177,13 @@ class RecommenderTemplateController extends AbstractStandardFormController
     protected function getViewArguments(array $args, $action)
     {
         /** @var ApiCommands $apiCommands */
-        $apiCommands    = $this->get('mautic.recommender.service.api.commands');
+        $apiCommands = $this->get('mautic.recommender.service.api.commands');
         $viewParameters = [];
         switch ($action) {
             case 'new':
             case 'edit':
                 $viewParameters['properties'] = $apiCommands->callCommand('ListProperties');
-                $viewParameters['settings']   = $this->get('mautic.helper.integration')->getIntegrationObject(
+                $viewParameters['settings'] = $this->get('mautic.helper.integration')->getIntegrationObject(
                     'Recommender'
                 )->getIntegrationSettings()->getFeatureSettings();
                 break;
@@ -206,15 +207,15 @@ class RecommenderTemplateController extends AbstractStandardFormController
         }
 
         /** @var ApiCommands $apiCommands */
-        $apiCommands         = $this->get('mautic.recommender.service.api.commands');
-        $eventLabel          = $this->get('mautic.helper.core_parameters')->getParameter('eventLabel');
+        $apiCommands = $this->get('mautic.recommender.service.api.commands');
+        $eventLabel = $this->get('mautic.helper.core_parameters')->getParameter('eventLabel');
         $integrationSettings = $this->get('mautic.helper.integration')->getIntegrationObject(
             'Recommender'
         )->getIntegrationSettings()->getFeatureSettings();
-        $options             = $this->request->request->all();
-        $recommender         = $this->request->get('eventDetail');
-        $eventDetail         = json_decode(base64_decode($recommender), true);
-        $error               = false;
+        $options = $this->request->request->all();
+        $recommender = $this->request->get('eventDetail');
+        $eventDetail = json_decode(base64_decode($recommender), true);
+        $error = false;
 
         if (!isset($eventDetail['eventName'])) {
             $error = $this->get('translator')->trans('mautic.plugin.recommender.eventName.not_found', [], 'validators');
@@ -228,14 +229,14 @@ class RecommenderTemplateController extends AbstractStandardFormController
                     'mautic.plugin.recommender.eventName.not_allowed',
                     [
                         '%eventName%' => $eventDetail['eventName'],
-                        '%events%'    => implode(', ', array_keys($integrationSettings['allowedEvents'])),
+                        '%events%' => implode(', ', array_keys($integrationSettings['allowedEvents'])),
                     ],
                     'validators'
                 );
             }
         }
 
-        $response = ['success' => !(bool) $error];
+        $response = ['success' => !(bool)$error];
         if (!$error) {
             $apiCommands->callCommand($eventLabel, $eventDetail);
         } else {

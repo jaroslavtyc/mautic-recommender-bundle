@@ -12,7 +12,6 @@
 namespace MauticPlugin\MauticRecommenderBundle\Controller;
 
 use Mautic\CoreBundle\Controller\AbstractStandardFormController;
-use Mautic\CoreBundle\Exception as MauticException;
 use MauticPlugin\MauticRecommenderBundle\Events\Processor;
 use MauticPlugin\MauticRecommenderBundle\Service\ContactSearch;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderTokenReplacer;
@@ -53,13 +52,13 @@ class RecommenderController extends AbstractStandardFormController
      */
     protected function getSessionBase($objectId = null)
     {
-        return 'recommender'.(($objectId) ? '.'.$objectId : '');
+        return 'recommender' . ($objectId ? ".$objectId" : '');
     }
 
     /**
      * @return string
      */
-    protected function getControllerBase()
+    protected function getControllerBase(): string
     {
         return 'MauticRecommenderBundle:Recommender';
     }
@@ -75,7 +74,7 @@ class RecommenderController extends AbstractStandardFormController
     /**
      * @param $objectId
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function cloneAction($objectId)
     {
@@ -86,7 +85,7 @@ class RecommenderController extends AbstractStandardFormController
      * @param      $objectId
      * @param bool $ignorePost
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction($objectId, $ignorePost = false)
     {
@@ -96,7 +95,7 @@ class RecommenderController extends AbstractStandardFormController
     /**
      * @param int $page
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction($page = 1)
     {
@@ -104,7 +103,7 @@ class RecommenderController extends AbstractStandardFormController
     }
 
     /**
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction()
     {
@@ -119,16 +118,16 @@ class RecommenderController extends AbstractStandardFormController
     public function viewAction($objectId)
     {
         //set the page we came from
-        $page      = $this->get('session')->get('mautic.recommender.page', 1);
+        $page = $this->get('session')->get('mautic.recommender.page', 1);
         $returnUrl = $this->generateUrl('mautic_recommender_index', ['page' => $page]);
 
         return $this->postActionRedirect(
             [
-                'returnUrl'       => $returnUrl,
-                'viewParameters'  => ['page' => $page],
+                'returnUrl' => $returnUrl,
+                'viewParameters' => ['page' => $page],
                 'contentTemplate' => 'MauticRecommenderBundle:Recommender:index',
                 'passthroughVars' => [
-                    'activeLink'    => '#mautic_recommender_index',
+                    'activeLink' => '#mautic_recommender_index',
                     'mauticContent' => 'recommender',
                 ],
             ]
@@ -167,8 +166,8 @@ class RecommenderController extends AbstractStandardFormController
     protected function getViewArguments(array $args, $action)
     {
         /** @var RecommenderTokenReplacer $recommenderTokenReplacer */
-        $recommenderTokenReplacer    = $this->get('mautic.recommender.service.replacer');
-        $viewParameters              = [];
+        $recommenderTokenReplacer = $this->get('mautic.recommender.service.replacer');
+        $viewParameters = [];
         switch ($action) {
             case 'edit':
                 /** @var ContactSearch $contactSearch */
@@ -191,15 +190,15 @@ class RecommenderController extends AbstractStandardFormController
     public function sendAction()
     {
         /** @var Logger $logger */
-        $logger      = $this->get('monolog.logger.mautic');
+        $logger = $this->get('monolog.logger.mautic');
         $recommender = $this->request->get('eventDetail');
         $eventDetail = json_decode(base64_decode($recommender), true);
-        $params      = $this->request->get('params');
+        $params = $this->request->get('params');
 
         /** @var Processor $eventProcessor */
         $eventProcessor = $this->get('mautic.recommender.events.processor');
         if (empty($eventDetail)) {
-            $logger->log('error', 'Empty event details from pixel event: '.$recommender.' with params '.$params);
+            $logger->log('error', 'Empty event details from pixel event: ' . $recommender . ' with params ' . $params);
         }
 
         try {
@@ -211,13 +210,13 @@ class RecommenderController extends AbstractStandardFormController
                 ]
             );
         } catch (\Exception $e) {
-            $logger->log('error', $e->getMessage().' with params '.$params);
+            $logger->log('error', $e->getMessage() . ' with params ' . $params);
             $error = $e->getMessage();
 
             return new JsonResponse(
                 [
                     'success' => 0,
-                    'error'   => $error,
+                    'error' => $error,
                 ]
             );
         }

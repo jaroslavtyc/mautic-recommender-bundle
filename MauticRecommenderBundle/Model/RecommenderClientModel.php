@@ -14,7 +14,6 @@ namespace MauticPlugin\MauticRecommenderBundle\Model;
 use Mautic\CoreBundle\Model\AbstractCommonModel;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Tracker\ContactTracker;
-use MauticPlugin\MauticRecommenderBundle\Entity\Item;
 
 class RecommenderClientModel extends AbstractCommonModel
 {
@@ -23,11 +22,6 @@ class RecommenderClientModel extends AbstractCommonModel
      */
     private $contactTracker;
 
-    /**
-     * RecommenderClientModel constructor.
-     *
-     * @param ContactTracker $contactTracker
-     */
     public function __construct(ContactTracker $contactTracker)
     {
         $this->contactTracker = $contactTracker;
@@ -91,10 +85,7 @@ class RecommenderClientModel extends AbstractCommonModel
         return $this->em->getRepository('MauticLeadBundle:Lead');
     }
 
-    /**
-     * @return Lead|null
-     */
-    public function getCurrentContact()
+    public function getCurrentContact(): ?Lead
     {
         return $this->contactTracker->getContact();
     }

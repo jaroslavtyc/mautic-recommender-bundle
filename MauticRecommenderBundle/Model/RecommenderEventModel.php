@@ -68,7 +68,7 @@ class RecommenderEventModel extends FormModel implements AjaxLookupModelInterfac
      *
      * @param       $entity
      * @param       $formFactory
-     * @param null  $action
+     * @param null $action
      * @param array $options
      *
      * @return mixed
@@ -138,9 +138,9 @@ class RecommenderEventModel extends FormModel implements AjaxLookupModelInterfac
     /**
      * @param        $type
      * @param string $filter
-     * @param int    $limit
-     * @param int    $start
-     * @param array  $options
+     * @param int $limit
+     * @param int $start
+     * @param array $options
      */
     public function getLookupResults($type, $filter = '', $limit = 10, $start = 0, $options = [])
     {
@@ -151,7 +151,7 @@ class RecommenderEventModel extends FormModel implements AjaxLookupModelInterfac
                     $filter,
                     $limit,
                     $start,
-                    $this->security->isGranted($this->getPermissionBase().':viewother'),
+                    $this->security->isGranted($this->getPermissionBase() . ':viewother'),
                     isset($options['top_level']) ? $options['top_level'] : false,
                     isset($options['ignore_ids']) ? $options['ignore_ids'] : []
                 );

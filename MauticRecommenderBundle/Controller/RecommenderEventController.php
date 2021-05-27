@@ -47,13 +47,13 @@ class RecommenderEventController extends AbstractStandardFormController
      */
     protected function getSessionBase($objectId = null)
     {
-        return 'recommenderEvent'.(($objectId) ? '.'.$objectId : '');
+        return 'recommenderEvent' . (($objectId) ? '.' . $objectId : '');
     }
 
     /**
      * @return string
      */
-    protected function getControllerBase()
+    protected function getControllerBase(): string
     {
         return 'MauticRecommenderBundle:RecommenderEvent';
     }
@@ -69,7 +69,7 @@ class RecommenderEventController extends AbstractStandardFormController
     /**
      * @param $objectId
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function cloneAction($objectId)
     {
@@ -80,7 +80,7 @@ class RecommenderEventController extends AbstractStandardFormController
      * @param      $objectId
      * @param bool $ignorePost
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction($objectId, $ignorePost = false)
     {
@@ -90,7 +90,7 @@ class RecommenderEventController extends AbstractStandardFormController
     /**
      * @param int $page
      *
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction($page = 1)
     {
@@ -98,7 +98,7 @@ class RecommenderEventController extends AbstractStandardFormController
     }
 
     /**
-     * @return \Mautic\CoreBundle\Controller\Response|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction()
     {
@@ -113,16 +113,16 @@ class RecommenderEventController extends AbstractStandardFormController
     public function viewAction($objectId)
     {
         //set the page we came from
-        $page      = $this->get('session')->get('mautic.recommender.event.page', 1);
+        $page = $this->get('session')->get('mautic.recommender.event.page', 1);
         $returnUrl = $this->generateUrl('mautic_recommender_event_index', ['page' => $page]);
 
         return $this->postActionRedirect(
             [
-                'returnUrl'       => $returnUrl,
-                'viewParameters'  => ['page' => $page],
+                'returnUrl' => $returnUrl,
+                'viewParameters' => ['page' => $page],
                 'contentTemplate' => 'MauticRecommenderBundle:RecommenderEvent:index',
                 'passthroughVars' => [
-                    'activeLink'    => '#mautic_recommender_event_index',
+                    'activeLink' => '#mautic_recommender_event_index',
                     'mauticContent' => 'recommenderEvent',
                 ],
             ]

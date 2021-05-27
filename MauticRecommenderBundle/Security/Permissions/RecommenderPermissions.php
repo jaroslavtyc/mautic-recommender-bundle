@@ -25,15 +25,15 @@ class RecommenderPermissions extends AbstractPermissions
     public function __construct($params)
     {
         parent::__construct($params);
-        $this->addExtendedPermissions('recommender');
+        $this->addExtendedPermissions(['recommender']);
     }
 
     /**
      * {@inheritdoc}
      *
-     * @return string|void
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'recommender';
     }
@@ -42,7 +42,7 @@ class RecommenderPermissions extends AbstractPermissions
      * {@inheritdoc}
      *
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface &$builder, array $options, array $data)
     {

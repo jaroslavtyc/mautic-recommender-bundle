@@ -13,7 +13,6 @@ namespace MauticPlugin\MauticRecommenderBundle\Controller;
 
 use Mautic\CoreBundle\Controller\AjaxController as CommonAjaxController;
 use Mautic\CoreBundle\Helper\InputHelper;
-use MauticPlugin\MauticFocusBundle\Model\FocusModel;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplate;
 use MauticPlugin\MauticRecommenderBundle\Form\Type\RecommenderTableOrderType;
 use Symfony\Component\HttpFoundation\Request;

@@ -12,9 +12,9 @@
 namespace MauticPlugin\MauticRecommenderBundle\Events;
 
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
-use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Model\LeadModel;
+use Mautic\LeadBundle\Tracker\ContactTracker;
 use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiCommands;
 use MauticPlugin\MauticRecommenderBundle\Model\RecommenderEventModel;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -27,17 +27,12 @@ class Processor
     private $coreParametersHelper;
 
     /**
-     * @var CorePermissions
-     */
-    private $security;
-
-    /**
      * @var ApiCommands
      */
     private $apiCommands;
 
     /**
-     * @var EventModel
+     * @var RecommenderEventModel
      */
     private $eventModel;
 
@@ -52,29 +47,25 @@ class Processor
     private $leadModel;
 
     /**
-     * Processor constructor.
-     *
-     * @param CoreParametersHelper  $coreParametersHelper
-     * @param CorePermissions       $security
-     * @param ApiCommands           $apiCommands
-     * @param RecommenderEventModel $eventModel
-     * @param TranslatorInterface   $translator
-     * @param LeadModel             $leadModel
+     * @var ContactTracker
      */
+    private $contactTracker;
+
     public function __construct(
         CoreParametersHelper $coreParametersHelper,
-        CorePermissions $security,
         ApiCommands $apiCommands,
         RecommenderEventModel $eventModel,
         TranslatorInterface $translator,
-        LeadModel $leadModel
-    ) {
+        LeadModel $leadModel,
+        ContactTracker $contactTracker
+    )
+    {
         $this->coreParametersHelper = $coreParametersHelper;
-        $this->security             = $security;
-        $this->apiCommands          = $apiCommands;
-        $this->eventModel           = $eventModel;
-        $this->translator           = $translator;
-        $this->leadModel            = $leadModel;
+        $this->apiCommands = $apiCommands;
+        $this->eventModel = $eventModel;
+        $this->translator = $translator;
+        $this->leadModel = $leadModel;
+        $this->contactTracker = $contactTracker;
     }
 
     /**
@@ -110,14 +101,14 @@ class Processor
         // Just provider from console
         if (defined('IN_MAUTIC_CONSOLE') || defined('IN_MAUTIC_API')) {
             if (isset($eventDetail['contactEmail'])) {
-                $contact = $this->leadModel->checkForDuplicateContact(['email'=>$eventDetail['contactEmail']]);
+                $contact = $this->leadModel->checkForDuplicateContact(['email' => $eventDetail['contactEmail']]);
                 if (!$contact instanceof Lead) {
-                    throw new \Exception('Contact '.$eventDetail['contactEmail'].' not found');
+                    throw new \Exception('Contact ' . $eventDetail['contactEmail'] . ' not found');
                 }
                 unset($eventDetail['contactEmail']);
-                $this->leadModel->setSystemCurrentLead($contact);
+                $this->contactTracker->setSystemContact($contact);
             } elseif (isset($eventDetail['contactId'])) {
-                $this->leadModel->setSystemCurrentLead($this->leadModel->getEntity($eventDetail['contactId']));
+                $this->contactTracker->setSystemContact($this->leadModel->getEntity($eventDetail['contactId']));
             } else {
                 throw new \Exception('One of parameters contactId/contactEmail is required');
             }
