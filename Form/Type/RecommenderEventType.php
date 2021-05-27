@@ -24,7 +24,7 @@ class RecommenderEventType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,12 +32,12 @@ class RecommenderEventType extends AbstractType
             'name',
             TextType::class,
             [
-                'label'       => 'mautic.plugin.recommender.form.event.name',
-                'label_attr'  => ['class' => 'control-label'],
-                'attr'        => [
-                    'class'   => 'form-control',
+                'label' => 'mautic.plugin.recommender.form.event.name',
+                'label_attr' => ['class' => 'control-label'],
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'    => true,
+                'required' => true,
                 'constraints' => [
                     new NotBlank(
                         [
@@ -52,12 +52,12 @@ class RecommenderEventType extends AbstractType
             'weight',
             NumberType::class,
             [
-                'label'       => 'mautic.plugin.recommender.form.event.weight',
-                'label_attr'  => ['class' => 'control-label'],
-                'attr'        => [
-                    'class'   => 'form-control',
+                'label' => 'mautic.plugin.recommender.form.event.weight',
+                'label_attr' => ['class' => 'control-label'],
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'    => true,
+                'required' => true,
                 'constraints' => [
                     new NotBlank(
                         [
@@ -77,13 +77,13 @@ class RecommenderEventType extends AbstractType
             'type',
             ChoiceType::class,
             [
-                'choices'     => EventTypeEnum::getChoices(),
-                'expanded'    => false,
-                'multiple'    => false,
-                'label'       => 'mautic.recommender.form.event.type',
-                'label_attr'  => ['class' => ''],
+                'choices' => EventTypeEnum::getChoices(),
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'mautic.recommender.form.event.type',
+                'label_attr' => ['class' => ''],
                 'empty_value' => '',
-                'required'    => true,
+                'required' => true,
             ]
         );
 
@@ -98,6 +98,12 @@ class RecommenderEventType extends AbstractType
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
+    {
         return 'recommender_event';
     }
+
 }
