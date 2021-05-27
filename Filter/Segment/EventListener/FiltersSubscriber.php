@@ -12,7 +12,6 @@
 namespace MauticPlugin\MauticRecommenderBundle\Filter\Segment\EventListener;
 
 use Mautic\CoreBundle\Event\BuildJsEvent;
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\LeadBundle\Event\LeadListFilteringEvent;
 use Mautic\LeadBundle\Event\LeadListFiltersChoicesEvent;
 use Mautic\LeadBundle\LeadEvents;
@@ -20,8 +19,10 @@ use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Choices;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\Decorator\Decorator;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\FilterFactory;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class FiltersSubscriber extends CommonSubscriber
+class FiltersSubscriber implements EventSubscriberInterface
 {
     /**
      * @var FilterFactory
@@ -42,24 +43,31 @@ class FiltersSubscriber extends CommonSubscriber
      * @var IntegrationHelper
      */
     protected $integrationHelper;
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * FiltersSubscriber constructor.
      *
      * @param FilterFactory $segmentFilterFactory
-     * @param Choices       $choices
-     * @param Decorator     $decorator
+     * @param Choices $choices
+     * @param Decorator $decorator
      */
     public function __construct(
         FilterFactory $segmentFilterFactory,
         Choices $choices,
         Decorator $decorator,
-        IntegrationHelper $integrationHelper
-    ) {
-        $this->filterFactory     = $segmentFilterFactory;
-        $this->choices           = $choices;
-        $this->decorator         = $decorator;
+        IntegrationHelper $integrationHelper,
+        Request $request
+    )
+    {
+        $this->filterFactory = $segmentFilterFactory;
+        $this->choices = $choices;
+        $this->decorator = $decorator;
         $this->integrationHelper = $integrationHelper;
+        $this->request = $request;
     }
 
     /**
@@ -88,7 +96,7 @@ class FiltersSubscriber extends CommonSubscriber
             return;
         }
 
-        $qb     = $event->getQueryBuilder();
+        $qb = $event->getQueryBuilder();
         $filter = $event->getDetails();
         if (false !== strpos($filter['object'], 'recommender')) {
             $filter = $this->filterFactory->getContactSegmentFilter($filter, $this->decorator);

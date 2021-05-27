@@ -31,11 +31,20 @@ class FilterFactory
      * @var TableSchemaColumnsCache
      */
     private $schemaCache;
+    /**
+     * @var Decorator
+     */
+    private $decorator;
 
-    public function __construct(ContainerInterface $container, TableSchemaColumnsCache $schemaCache)
+    public function __construct(
+        ContainerInterface $container,
+        TableSchemaColumnsCache $schemaCache,
+        Decorator $decorator
+    )
     {
         $this->container = $container;
         $this->schemaCache = $schemaCache;
+        $this->decorator = $decorator;
     }
 
     /**

@@ -10,11 +10,7 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query;
 
-use Mautic\LeadBundle\Segment\ContactSegmentFilter;
-use Mautic\LeadBundle\Segment\Query\Filter\BaseFilterQueryBuilder;
-use Mautic\LeadBundle\Segment\Query\QueryBuilder;
 use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventDateQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventQueryBuilder;
 
 class SegmentEventDateQueryBuilder extends ItemEventDateQueryBuilder
 {

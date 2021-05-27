@@ -13,11 +13,9 @@ namespace MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query;
 use Mautic\LeadBundle\Segment\ContactSegmentFilter;
 use Mautic\LeadBundle\Segment\Query\Expression\CompositeExpression;
 use Mautic\LeadBundle\Segment\Query\QueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Query\QueryBuilderTrait;
 use MauticPlugin\MauticRecommenderBundle\Filter\Query\RecommenderFilterQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Helper\SqlQuery;
 
-class ItemEventQueryBuilder extends RecommenderFilterQueryBuilder
+class ItemQueryBuilder extends RecommenderFilterQueryBuilder
 {
     /**
      * @return string
@@ -32,7 +30,7 @@ class ItemEventQueryBuilder extends RecommenderFilterQueryBuilder
      */
     public static function getServiceId()
     {
-        return 'mautic.recommender.query.builder.recommender.event';
+        return 'mautic.recommender.query.builder.recommender.item';
     }
 
     /** {@inheritdoc} */
@@ -57,36 +55,36 @@ class ItemEventQueryBuilder extends RecommenderFilterQueryBuilder
 
         if (!$tableAlias) {
             $tableAlias = $this->generateRandomParameterName();
-            $queryBuilder->leftJoin('l', $filter->getTable(), $tableAlias, $tableAlias.'.'.$this->getIdentificator().' = l.id');
+            $queryBuilder->leftJoin('l', $filter->getTable(), $tableAlias, $tableAlias . '.' . $this->getIdentificator() . ' = l.item_id');
         }
         $subQueryBuilder = $queryBuilder->getConnection()->createQueryBuilder();
         $subQueryBuilder
             ->select('NULL')->from($filter->getTable(), $tableAlias)
-            ->andWhere($tableAlias.'.'.$this->getIdentificator().' = l.id');
+            ->andWhere($tableAlias . '.' . $this->getIdentificator() . ' = l.id');
 
         switch ($filterOperator) {
             case 'empty':
                 $expression = new CompositeExpression(CompositeExpression::TYPE_OR,
                     [
-                        $queryBuilder->expr()->isNull($tableAlias.'.'.$filter->getField()),
-                        $queryBuilder->expr()->eq($tableAlias.'.'.$filter->getField(), $queryBuilder->expr()->literal('')),
+                        $queryBuilder->expr()->isNull($tableAlias . '.' . $filter->getField()),
+                        $queryBuilder->expr()->eq($tableAlias . '.' . $filter->getField(), $queryBuilder->expr()->literal('')),
                     ]
                 );
                 break;
             case 'notEmpty':
                 $expression = new CompositeExpression(CompositeExpression::TYPE_AND,
                     [
-                        $queryBuilder->expr()->isNotNull($tableAlias.'.'.$filter->getField()),
-                        $queryBuilder->expr()->neq($tableAlias.'.'.$filter->getField(), $queryBuilder->expr()->literal('')),
+                        $queryBuilder->expr()->isNotNull($tableAlias . '.' . $filter->getField()),
+                        $queryBuilder->expr()->neq($tableAlias . '.' . $filter->getField(), $queryBuilder->expr()->literal('')),
                     ]
                 );
 
                 break;
             case 'neq':
                 $expression = $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->isNull($tableAlias.'.'.$filter->getField()),
+                    $queryBuilder->expr()->isNull($tableAlias . '.' . $filter->getField()),
                     $queryBuilder->expr()->$filterOperator(
-                        $tableAlias.'.'.$filter->getField(),
+                        $tableAlias . '.' . $filter->getField(),
                         $filterParametersHolder
                     )
                 );
@@ -104,7 +102,7 @@ class ItemEventQueryBuilder extends RecommenderFilterQueryBuilder
             case 'regexp':
             case 'notRegexp': //Different behaviour from 'notLike' because of BC (do not use condition for NULL). Could be changed in Mautic 3.
                 $expression = $queryBuilder->expr()->$filterOperator(
-                    $tableAlias.'.'.$filter->getField(),
+                    $tableAlias . '.' . $filter->getField(),
                     $filterParametersHolder
                 );
                 break;
@@ -112,34 +110,34 @@ class ItemEventQueryBuilder extends RecommenderFilterQueryBuilder
             case 'notBetween': //Used only for date with week combination (NOT EQUAL [this week, next week, last week])
             case 'notIn':
                 $expression = $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->$filterOperator($tableAlias.'.'.$filter->getField(), $filterParametersHolder),
-                    $queryBuilder->expr()->isNull($tableAlias.'.'.$filter->getField())
+                    $queryBuilder->expr()->$filterOperator($tableAlias . '.' . $filter->getField(), $filterParametersHolder),
+                    $queryBuilder->expr()->isNull($tableAlias . '.' . $filter->getField())
                 );
                 break;
             case 'notGt':
             case 'notLt':
-            $expr       = strtolower(str_replace('not', '', $filterOperator));
-            $expression = $subQueryBuilder->expr()->orX(
-                $subQueryBuilder->expr()->isNull($tableAlias.'.'.$filter->getField()),
-                $subQueryBuilder->expr()->$expr($tableAlias.'.'.$filter->getField(), $filterParametersHolder)
-            );
+                $expr = strtolower(str_replace('not', '', $filterOperator));
+                $expression = $subQueryBuilder->expr()->orX(
+                    $subQueryBuilder->expr()->isNull($tableAlias . '.' . $filter->getField()),
+                    $subQueryBuilder->expr()->$expr($tableAlias . '.' . $filter->getField(), $filterParametersHolder)
+                );
 
-            $subQueryBuilder->andWhere($expression);
+                $subQueryBuilder->andWhere($expression);
 
-            $queryBuilder->addLogic($queryBuilder->expr()->notExists($subQueryBuilder->getSQL()), $filter->getGlue());
+                $queryBuilder->addLogic($queryBuilder->expr()->notExists($subQueryBuilder->getSQL()), $filter->getGlue());
                 break;
             case 'multiselect':
             case '!multiselect':
-                $operator    = $filterOperator === 'multiselect' ? 'regexp' : 'notRegexp';
+                $operator = $filterOperator === 'multiselect' ? 'regexp' : 'notRegexp';
                 $expressions = [];
                 foreach ($filterParametersHolder as $parameter) {
-                    $expressions[] = $queryBuilder->expr()->$operator($tableAlias.'.'.$filter->getField(), $parameter);
+                    $expressions[] = $queryBuilder->expr()->$operator($tableAlias . '.' . $filter->getField(), $parameter);
                 }
 
                 $expression = $queryBuilder->expr()->andX($expressions);
                 break;
             default:
-                throw new \Exception('Dunno how to handle operator "'.$filterOperator.'"');
+                throw new \Exception('Dunno how to handle operator "' . $filterOperator . '"');
         }
 
         if (!in_array($filterOperator, ['notGt', 'notLt'])) {

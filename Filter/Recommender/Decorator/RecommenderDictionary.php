@@ -12,16 +12,10 @@
 namespace MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Decorator;
 
 use MauticPlugin\MauticRecommenderBundle\Filter\Fields\Fields;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\FilterQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventDateQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventValueQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemValueQueryBuilder;
 
 class RecommenderDictionary
 {
-    const ALLOWED_TABLES = [
+    public const ALLOWED_TABLES = [
         'recommender_item',
         'recommender_item_property_value',
         'recommender_event_log',
@@ -51,9 +45,9 @@ class RecommenderDictionary
             foreach ($fields as $key => $field) {
                 if (isset($field['decorator']['recommender']['type'])) {
                     $dictionary[$key] = [
-                        'type'          => $field['decorator']['recommender']['type'],
+                        'type' => $field['decorator']['recommender']['type'],
                         'foreign_table' => isset($field['decorator']['recommender']['foreign_table']) ? $field['decorator']['recommender']['foreign_table'] : $table,
-                        'field'         => isset($field['decorator']['key']) ? $field['decorator']['key'] : $key,
+                        'field' => isset($field['decorator']['key']) ? $field['decorator']['key'] : $key,
                     ];
                 }
                 /*   switch ($table) {

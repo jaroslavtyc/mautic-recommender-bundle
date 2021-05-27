@@ -21,14 +21,15 @@ class Decorator extends CustomMappedDecorator
     /**
      * Decorator constructor.
      *
-     * @param ContactSegmentFilterOperator   $contactSegmentFilterOperator
+     * @param ContactSegmentFilterOperator $contactSegmentFilterOperator
      * @param ContactSegmentFilterDictionary $contactSegmentFilterDictionary
      */
     public function __construct(
         ContactSegmentFilterOperator $contactSegmentFilterOperator,
         ContactSegmentFilterDictionary $contactSegmentFilterDictionary,
         RecommenderDictionary $dictionary
-    ) {
+    )
+    {
         parent::__construct($contactSegmentFilterOperator, $contactSegmentFilterDictionary);
         $this->dictionary = $dictionary->getDictionary();
     }

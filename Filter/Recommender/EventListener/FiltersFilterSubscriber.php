@@ -11,23 +11,21 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Filter\Recommender\EventListener;
 
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\CoreBundle\Helper\InputHelper;
 use Mautic\LeadBundle\Event\LeadListFilteringEvent;
 use MauticPlugin\MauticRecommenderBundle\Event\FilterChoiceFormEvent;
-use MauticPlugin\MauticRecommenderBundle\Event\FilterFormEvent;
 use MauticPlugin\MauticRecommenderBundle\Event\FilterResultsEvent;
-use MauticPlugin\MauticRecommenderBundle\EventListener\Service\CampaignLeadDetails;
 use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\RecommenderQueryBuilder;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\FilterFactory;
 use MauticPlugin\MauticRecommenderBundle\Helper\SqlQuery;
 use MauticPlugin\MauticRecommenderBundle\Model\RecommenderClientModel;
 use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderToken;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class FiltersFilterSubscriber extends CommonSubscriber
+class FiltersFilterSubscriber implements EventSubscriberInterface
 {
-    const TYPE = 'filters';
+    public const TYPE = 'filters';
 
     /**
      * @var RecommenderClientModel
@@ -44,17 +42,15 @@ class FiltersFilterSubscriber extends CommonSubscriber
      */
     private $filterFactory;
 
-    /**
-     * PointsFilterSubscriber constructor.
-     *
-     * @param RecommenderClientModel  $clientModel
-     * @param RecommenderQueryBuilder $recommenderQueryBuilder
-     */
-    public function __construct(RecommenderClientModel $clientModel, RecommenderQueryBuilder $recommenderQueryBuilder, FilterFactory $filterFactory)
+    public function __construct(
+        RecommenderClientModel $clientModel,
+        RecommenderQueryBuilder $recommenderQueryBuilder,
+        FilterFactory $filterFactory
+    )
     {
-        $this->clientModel             = $clientModel;
+        $this->clientModel = $clientModel;
         $this->recommenderQueryBuilder = $recommenderQueryBuilder;
-        $this->filterFactory           = $filterFactory;
+        $this->filterFactory = $filterFactory;
     }
 
     /**
@@ -66,7 +62,7 @@ class FiltersFilterSubscriber extends CommonSubscriber
             MauticRecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE => [
                 ['onFilterFormChoicesGenerate', 1],
             ],
-            MauticRecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS               => [
+            MauticRecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS => [
                 ['onFilterResults', 5],
             ],
         ];
@@ -90,12 +86,12 @@ class FiltersFilterSubscriber extends CommonSubscriber
         if ($recommenderToken->getRecommender()->getFilter() == self::TYPE) {
             $qb = $this->recommenderQueryBuilder->assembleContactQueryBuilder($recommenderToken);
             SqlQuery::debugQuery($qb);
-            $results = $qb->execute()->fetchAll();
+            $results = $qb->execute()->fetchAllAssociative();
             foreach ($results as &$result) {
-                $properties           = $this->getModel()->getItemPropertyValueRepository()->getValues($result['id']);
-                $properties           = array_combine(array_column($properties, 'name'), array_column($properties, 'value'));
+                $properties = $this->getModel()->getItemPropertyValueRepository()->getValues($result['id']);
+                $properties = array_combine(array_column($properties, 'name'), array_column($properties, 'value'));
                 $translatedProperties = [];
-                foreach ($properties as $property=>$value) {
+                foreach ($properties as $property => $value) {
                     $translatedProperties[InputHelper::alphanum(InputHelper::transliterate($property))] = $value;
                 }
                 $result = array_merge($result, $translatedProperties);
@@ -110,10 +106,10 @@ class FiltersFilterSubscriber extends CommonSubscriber
      */
     public function onListFiltersFiltering(LeadListFilteringEvent $event)
     {
-        $qb     = $event->getQueryBuilder();
+        $qb = $event->getQueryBuilder();
         $filter = $event->getDetails();
         if (false !== strpos($filter['object'], 'recommender')) {
-            $this->filterFactory->applySegmentQuery($filter, $qb, 'mautic.recommender.filter.recommender.dictionary');
+            $this->filterFactory->applySegmentQuery($filter, $qb);
             $event->setFilteringStatus(true);
         }
     }

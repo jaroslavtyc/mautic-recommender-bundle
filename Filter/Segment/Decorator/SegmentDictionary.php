@@ -11,10 +11,7 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Filter\Segment\Decorator;
 
-use Mautic\LeadBundle\Segment\Query\Filter\ForeignValueFilterQueryBuilder;
 use MauticPlugin\MauticRecommenderBundle\Filter\Fields\Fields;
-use MauticPlugin\MauticRecommenderBundle\Filter\Query\BaseFilterQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemQueryBuilder;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query\ItemValueQueryBuilder;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query\SegmentEventDateQueryBuilder;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query\SegmentEventQueryBuilder;
@@ -22,7 +19,12 @@ use MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query\SegmentEventValueQ
 
 class SegmentDictionary
 {
-    const ALLOWED_TABLES = ['recommender_event_log', 'recommender_event_log_property_value', 'recommender_item', 'recommender_item_property_value'];
+    public const ALLOWED_TABLES = [
+        'recommender_event_log',
+        'recommender_event_log_property_value',
+        'recommender_item',
+        'recommender_item_property_value',
+    ];
 
     /**
      * @var Fields
@@ -48,52 +50,52 @@ class SegmentDictionary
                 switch ($table) {
                     case 'recommender_item':
                         $dictionary[$key] = [
-                            'type'          => \MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query\ItemQueryBuilder::getServiceId(),
+                            'type' => \MauticPlugin\MauticRecommenderBundle\Filter\Segment\Query\ItemQueryBuilder::getServiceId(),
                             'foreign_table' => $table,
-                            'field'         => $key,
+                            'field' => $key,
                         ];
                         break;
                     case 'recommender_item_property_value':
                         $dictionary[$key] = [
-                            'type'          => ItemValueQueryBuilder::getServiceId(),
+                            'type' => ItemValueQueryBuilder::getServiceId(),
                             'foreign_table' => $table,
-                            'field'         => $this->fields->cleanKey($key),
+                            'field' => $this->fields->cleanKey($key),
                         ];
                         break;
                     case 'recommender_event_log':
-                    /*    $dictionary[$key] = [
-                            'type'          => SegmentEventQueryBuilder::getServiceId(),
-                            'foreign_table' => $table,
-                            'foreign_table_field' => 'event_log_id',
-                            'table_field'         => 'event_log_id',
-                            'field'       => $key,
-                        ];*/
+                        /*    $dictionary[$key] = [
+                                'type'          => SegmentEventQueryBuilder::getServiceId(),
+                                'foreign_table' => $table,
+                                'foreign_table_field' => 'event_log_id',
+                                'table_field'         => 'event_log_id',
+                                'field'       => $key,
+                            ];*/
 
                         $value = $key;
                         if (false !== strpos($key, 'date_added_')) {
-                            $value            = str_replace('date_added_', '', $key);
+                            $value = str_replace('date_added_', '', $key);
                             $dictionary[$key] = [
-                                'type'                => SegmentEventDateQueryBuilder::getServiceId(),
-                                'foreign_table'       => $table,
+                                'type' => SegmentEventDateQueryBuilder::getServiceId(),
+                                'foreign_table' => $table,
                                 'foreign_table_field' => $value,
-                                'field'               => $value == $key ? $key : $value,
+                                'field' => $value == $key ? $key : $value,
                             ];
                         } else {
                             $dictionary[$key] = [
-                                'type'                => SegmentEventQueryBuilder::getServiceId(),
-                                'foreign_table'       => $table,
+                                'type' => SegmentEventQueryBuilder::getServiceId(),
+                                'foreign_table' => $table,
                                 'foreign_table_field' => $value,
-                                'field'               => $value == $key ? $key : 'date_added',
+                                'field' => $value == $key ? $key : 'date_added',
                             ];
                         }
                         break;
                     case 'recommender_event_log_property_value':
                         $dictionary[$key] = [
-                            'type'                => SegmentEventValueQueryBuilder::getServiceId(),
-                            'foreign_table'       => $table,
+                            'type' => SegmentEventValueQueryBuilder::getServiceId(),
+                            'foreign_table' => $table,
                             'foreign_table_field' => 'event_log_id',
-                            'table_field'         => 'event_log_id',
-                            'field'               => $this->fields->cleanKey($key),
+                            'table_field' => 'event_log_id',
+                            'field' => $this->fields->cleanKey($key),
                         ];
                         break;
                 }

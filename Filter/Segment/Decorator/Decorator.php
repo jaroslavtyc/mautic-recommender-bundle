@@ -18,18 +18,12 @@ use Mautic\LeadBundle\Services\ContactSegmentFilterDictionary;
 
 class Decorator extends CustomMappedDecorator
 {
-    /**
-     * Decorator constructor.
-     *
-     * @param ContactSegmentFilterOperator   $contactSegmentFilterOperator
-     * @param ContactSegmentFilterDictionary $contactSegmentFilterDictionary
-     * @param SegmentDictionary              $dictionary
-     */
     public function __construct(
         ContactSegmentFilterOperator $contactSegmentFilterOperator,
         ContactSegmentFilterDictionary $contactSegmentFilterDictionary,
         SegmentDictionary $dictionary
-    ) {
+    )
+    {
         parent::__construct($contactSegmentFilterOperator, $contactSegmentFilterDictionary);
         $this->dictionary = $dictionary->getDictionary();
     }

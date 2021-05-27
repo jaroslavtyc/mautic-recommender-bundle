@@ -19,7 +19,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class Choices
 {
-    const ALLOWED_TABLES = ['recommender_event_log', 'recommender_event_log_property_value'];
+    public const ALLOWED_TABLES = ['recommender_event_log', 'recommender_event_log_property_value'];
 
     /**
      * @var Fields
@@ -44,8 +44,8 @@ class Choices
     /**
      * SegmentChoices constructor.
      *
-     * @param Fields              $fields
-     * @param ListModel           $listModel
+     * @param Fields $fields
+     * @param ListModel $listModel
      * @param TranslatorInterface $translator
      */
     public function __construct(
@@ -53,10 +53,11 @@ class Choices
         ListModel $listModel,
         TranslatorInterface $translator,
         IntegrationHelper $integrationHelper
-    ) {
-        $this->fields            = $fields;
-        $this->listModel         = $listModel;
-        $this->translator        = $translator;
+    )
+    {
+        $this->fields = $fields;
+        $this->listModel = $listModel;
+        $this->translator = $translator;
         $this->integrationHelper = $integrationHelper;
     }
 
@@ -73,7 +74,7 @@ class Choices
 
         $choices = $this->getChoices();
         foreach (self::ALLOWED_TABLES as $table) {
-            foreach ($choices[$table] as $key=>$options) {
+            foreach ($choices[$table] as $key => $options) {
                 $event->addChoice($table, $key, $options);
             }
         }
@@ -93,9 +94,9 @@ class Choices
                 }
 
                 $choices[$table][$key] = [
-                    'label'      => $this->translator->trans('mautic.plugin.recommender.form.event').' '.$this->translator->trans($field['name']),
+                    'label' => $this->translator->trans('mautic.plugin.recommender.form.event') . ' ' . $this->translator->trans($field['name']),
                     'properties' => $properties,
-                    'operators'  => $this->listModel->getOperatorsForFieldType(
+                    'operators' => $this->listModel->getOperatorsForFieldType(
                         $properties['type']
                     ),
                 ];

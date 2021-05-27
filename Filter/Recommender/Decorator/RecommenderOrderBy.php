@@ -14,16 +14,10 @@ namespace MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Decorator;
 use Mautic\LeadBundle\Segment\RandomParameterName;
 use MauticPlugin\MauticRecommenderBundle\Filter\Fields\Fields;
 use MauticPlugin\MauticRecommenderBundle\Filter\QueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\FilterQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventDateQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemEventValueQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemQueryBuilder;
-use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Query\ItemValueQueryBuilder;
 
 class RecommenderOrderBy
 {
-    const ALLOWED_TABLES = ['recommender_event_log', 'recommender_event_log_property_value'];
+    public const ALLOWED_TABLES = ['recommender_event_log', 'recommender_event_log_property_value'];
 
     /**
      * @var Fields
@@ -36,12 +30,12 @@ class RecommenderOrderBy
     /**
      * SegmentChoices constructor.
      *
-     * @param Fields              $fields
+     * @param Fields $fields
      * @param RandomParameterName $randomParameterName
      */
     public function __construct(Fields $fields, RandomParameterName $randomParameterName)
     {
-        $this->fields              = $fields;
+        $this->fields = $fields;
         $this->randomParameterName = $randomParameterName;
     }
 
@@ -55,8 +49,8 @@ class RecommenderOrderBy
                     continue;
                 }
                 $tableFromDecorator = isset($field['decorator']['recommender']['foreign_table']) ? $field['decorator']['recommender']['foreign_table'] : $table;
-                $idFromDecorator    = isset($field['decorator']['recommender']['foreign_identificator']) ? $field['decorator']['recommender']['foreign_identificator'] : 'id';
-                $keyFromDecorator   = isset($field['decorator']['recommender']['key']) ? $field['decorator']['recommender']['key'] : $key;
+                $idFromDecorator = isset($field['decorator']['recommender']['foreign_identificator']) ? $field['decorator']['recommender']['foreign_identificator'] : 'id';
+                $keyFromDecorator = isset($field['decorator']['recommender']['key']) ? $field['decorator']['recommender']['key'] : $key;
 
                 // Order By from decorator
                 if (isset($field['decorator']['recommender']['orderBy'])) {
@@ -68,11 +62,12 @@ class RecommenderOrderBy
 
                 if (!$tableAlias) {
                     $tableAlias = $this->randomParameterName->generateRandomParameterName();
-                    $queryBuilder->leftJoin('l', $tableFromDecorator, $tableAlias, $tableAlias.'.'.$idFromDecorator.' = l.event_id');
+                    $queryBuilder->leftJoin('l', $tableFromDecorator, $tableAlias, $tableAlias . '.' . $idFromDecorator . ' = l.event_id');
                 }
 
-                return $tableAlias.'.'.$keyFromDecorator;
+                return $tableAlias . '.' . $keyFromDecorator;
             }
         }
+        return null;
     }
 }

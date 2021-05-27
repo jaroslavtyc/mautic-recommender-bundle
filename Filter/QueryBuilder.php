@@ -43,13 +43,13 @@ class QueryBuilder extends \Mautic\LeadBundle\Segment\Query\QueryBuilder
      *
      * @return array
      */
-    public function getAllTableAliases()
+    public function getAllTableAliases(): array
     {
         $queryParts = $this->getQueryParts();
-        $froms      = $queryParts['from'];
-        $tables     = [];
+        $froms = $queryParts['from'];
+        $tables = [];
         foreach ($froms as $item) {
-            $tables[$item['table']][]   = $item['alias'];
+            $tables[$item['table']][] = $item['alias'];
         }
 
         foreach ($queryParts['join'] as $join) {
