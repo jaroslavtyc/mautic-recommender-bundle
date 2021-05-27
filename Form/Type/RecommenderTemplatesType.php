@@ -11,13 +11,15 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
+use Mautic\CoreBundle\Form\Type\ButtonGroupType;
 use Mautic\CoreBundle\Form\Type\FormButtonsType;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Range;
@@ -46,25 +48,25 @@ class RecommenderTemplatesType extends AbstractType
      */
     public function __construct(CorePermissions $security, RouterInterface $router, TranslatorInterface $translator)
     {
-        $this->security   = $security;
-        $this->router     = $router;
+        $this->security = $security;
+        $this->router = $router;
         $this->translator = $translator;
     }
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
             'name',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.core.name',
+                'label' => 'mautic.core.name',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => ['class' => 'form-control'],
-                'required'   => true,
+                'attr' => ['class' => 'form-control'],
+                'required' => true,
             ]
         );
 
@@ -72,14 +74,14 @@ class RecommenderTemplatesType extends AbstractType
             'numberOfItems',
             NumberType::class,
             [
-                'label'       => 'mautic.plugin.recommender.form.number_of_items.default',
-                'label_attr'  => ['class' => 'control-label'],
-                'attr'        => [
-                    'class'   => 'form-control',
+                'label' => 'mautic.plugin.recommender.form.number_of_items.default',
+                'label_attr' => ['class' => 'control-label'],
+                'attr' => [
+                    'class' => 'form-control',
                     'tooltip' => 'mautic.plugin.recommender.form.number_of_items.tooltip',
                 ],
-                'required'    => false,
-                'data'        => $options['data']->getNumberOfItems(),
+                'required' => false,
+                'data' => $options['data']->getNumberOfItems(),
                 'constraints' => [
                     new Range(
                         [
@@ -92,20 +94,20 @@ class RecommenderTemplatesType extends AbstractType
 
         $builder->add(
             'templateMode',
-            'button_group',
+            ButtonGroupType::class,
             [
-                'label'      => 'mautic.plugin.recommender.form.template_mode',
+                'label' => 'mautic.plugin.recommender.form.template_mode',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'    => 'form-control',
-                    'tooltip'  => 'mautic.plugin.recommender.form.template_mode.tooltip',
+                'attr' => [
+                    'class' => 'form-control',
+                    'tooltip' => 'mautic.plugin.recommender.form.template_mode.tooltip',
                 ],
                 'choices' => [
-                    'mautic.plugin.recommender.form.basic'  => 'basic',
-                    'mautic.plugin.recommender.form.html'   => 'html',
+                    'mautic.plugin.recommender.form.basic' => 'basic',
+                    'mautic.plugin.recommender.form.html' => 'html',
                 ],
                 'choices_as_values' => true,
-                'data'              => $options['data']->getTemplateMode() ?: 'basic',
+                'data' => $options['data']->getTemplateMode() ?: 'basic',
             ]
         );
 
@@ -113,11 +115,11 @@ class RecommenderTemplatesType extends AbstractType
             'properties',
             RecommenderPropertiesType::class,
             [
-                'label'      => false,
-                'attr'       => [
+                'label' => false,
+                'attr' => [
                     'data-show-on' => '{"recommender_templateMode_0":"checked"}',
                 ],
-                'data'=> $options['data']->getProperties(),
+                'data' => $options['data']->getProperties(),
             ]
         );
 
@@ -125,8 +127,8 @@ class RecommenderTemplatesType extends AbstractType
             'template',
             RecommenderTemplateType::class,
             [
-                'label'      => 'mautic.plugin.recommender.template',
-                'attr'       => [
+                'label' => 'mautic.plugin.recommender.template',
+                'attr' => [
                     'data-show-on' => '{"recommender_templateMode_1":"checked"}',
                 ],
             ]
@@ -144,9 +146,9 @@ class RecommenderTemplatesType extends AbstractType
             );
             $builder->add(
                 'updateSelect',
-                'hidden',
+                HiddenType::class,
                 [
-                    'data'   => $options['update_select'],
+                    'data' => $options['update_select'],
                     'mapped' => false,
                 ]
             );

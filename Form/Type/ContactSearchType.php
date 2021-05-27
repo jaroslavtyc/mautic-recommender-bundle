@@ -14,7 +14,7 @@ namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactSearchType extends AbstractType
@@ -25,12 +25,12 @@ class ContactSearchType extends AbstractType
             'contact',
             ChoiceType::class,
             [
-                'choices'     => isset($options['choices']) ? $options['choices'] : [],
-                'label'       => false,
-                'label_attr'  => ['class' => 'control-label'],
-                'multiple'    => false,
-                'attr'        => [
-                    'class'    => 'form-control',
+                'choices' => isset($options['choices']) ? $options['choices'] : [],
+                'label' => false,
+                'label_attr' => ['class' => 'control-label'],
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'form-control',
                     'onchange' => 'Mautic.reloadExample(this)',
                 ],
                 'constraints' => [
@@ -46,13 +46,5 @@ class ContactSearchType extends AbstractType
         if (!empty($options['action'])) {
             $builder->setAction($options['action']);
         }
-    }
-
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setOptional(['choices']);
     }
 }

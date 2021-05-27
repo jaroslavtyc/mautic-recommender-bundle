@@ -38,20 +38,17 @@ class ListEventsType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'choices' => function (Options $options) {
-                $events  = $this->recommenderEventModel->getRepository()->findAll();
+                $events = $this->recommenderEventModel->getRepository()->findAll();
                 $choices = [];
                 /** @var Event $event */
                 foreach ($events as $event) {
@@ -60,13 +57,13 @@ class ListEventsType extends AbstractType
 
                 return $choices;
             },
-            'attr'        => [
+            'attr' => [
                 'class' => 'form-control',
             ],
-            'label'       => '',
-            'expanded'    => false,
-            'multiple'    => false,
-            'required'    => false,
+            'label' => '',
+            'expanded' => false,
+            'multiple' => false,
+            'required' => false,
         ]);
     }
 

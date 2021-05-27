@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class FilterType extends AbstractType
+class RecommenderFilterType extends AbstractType
 {
     use FilterTrait;
 
@@ -41,7 +41,7 @@ class FilterType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -49,13 +49,13 @@ class FilterType extends AbstractType
             'glue',
             ChoiceType::class,
             [
-                'label'   => false,
+                'label' => false,
                 'choices' => [
                     'and' => 'mautic.lead.list.form.glue.and',
-                    'or'  => 'mautic.lead.list.form.glue.or',
+                    'or' => 'mautic.lead.list.form.glue.or',
                 ],
                 'attr' => [
-                    'class'    => 'form-control not-chosen glue-select',
+                    'class' => 'form-control not-chosen glue-select',
                     'onchange' => 'Mautic.updateFilterPositioning(this)',
                 ],
             ]
@@ -99,7 +99,7 @@ class FilterType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'label'          => false,
+                'label' => false,
                 'error_bubbling' => false,
             ]
         );
@@ -115,6 +115,6 @@ class FilterType extends AbstractType
 
     public function getName()
     {
-        'recommender_filter';
+        return 'recommender_filter';
     }
 }

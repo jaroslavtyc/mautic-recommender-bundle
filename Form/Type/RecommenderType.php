@@ -23,6 +23,9 @@ use MauticPlugin\MauticRecommenderBundle\Model\RecommenderClientModel;
 use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -174,7 +177,7 @@ class RecommenderType extends AbstractType
 
             $builder->add(
                 'newRecommenderButton',
-                'button',
+                ButtonType::class,
                 [
                     'attr' => [
                         'class' => 'btn btn-primary btn-nospin',
@@ -200,7 +203,7 @@ class RecommenderType extends AbstractType
 
             $builder->add(
                 'editRecommenderButton',
-                'button',
+                ButtonType::class,
                 [
                     'attr' => [
                         'class' => 'btn btn-primary btn-nospin',
@@ -221,7 +224,7 @@ class RecommenderType extends AbstractType
         }
         $builder->add(
             'filter',
-            'choice',
+            ChoiceType::class,
             [
                 'choices' => $choices,
                 'expanded' => false,
@@ -244,9 +247,9 @@ class RecommenderType extends AbstractType
         $builder->add(
             $builder->create(
                 'filters',
-                'collection',
+                CollectionType::class,
                 [
-                    'type' => FilterType::class,
+                    'type' => RecommenderFilterType::class,
                     'options' => [
                         'fields' => $this->fieldChoices,
                     ],
@@ -284,7 +287,7 @@ class RecommenderType extends AbstractType
 
         $builder->add(
             'filterTarget',
-            'choice',
+            ChoiceType::class,
             [
                 'choices' => [
                     'reflective' => 'mautic.plugin.recommender.form.filter_target.reflective',
@@ -335,6 +338,12 @@ class RecommenderType extends AbstractType
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
+    {
         return 'recommender';
     }
+
 }

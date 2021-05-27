@@ -99,7 +99,7 @@ return [
                 ],
             ],
             'mautic.form.type.recommender.filters' => [
-                'class' => MauticPlugin\MauticRecommenderBundle\Form\Type\FilterType::class,
+                'class' => MauticPlugin\MauticRecommenderBundle\Form\Type\RecommenderFilterType::class,
                 'alias' => 'recommender_filters',
                 'arguments' => [
                     'translator',

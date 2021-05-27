@@ -11,10 +11,10 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
-use JMS\Serializer\Tests\Fixtures\Input;
 use Mautic\CoreBundle\Helper\InputHelper;
 use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiCommands;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,32 +41,29 @@ class RecommenderTagsType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'choices' => function (Options $options) {
-                $properties =  $this->apiCommands->callCommand('ListProperties');
+                $properties = $this->apiCommands->callCommand('ListProperties');
                 $choices = [];
                 foreach ($properties as $property) {
-                    $tag = '{{ '.InputHelper::alphanum(InputHelper::transliterate($property['name'])).' }}';
+                    $tag = '{{ ' . InputHelper::alphanum(InputHelper::transliterate($property['name'])) . ' }}';
                     $choices[$tag] = $property['name'];
                 }
 
                 return $choices;
             },
-            'label'       => 'mautic.plugin.recommender.template.tags',
-            'label_attr'  => ['class' => 'control-label'],
-            'multiple'    => false,
-            'required'    => false,
+            'label' => 'mautic.plugin.recommender.template.tags',
+            'label_attr' => ['class' => 'control-label'],
+            'multiple' => false,
+            'required' => false,
         ]);
     }
 
@@ -74,6 +71,11 @@ class RecommenderTagsType extends AbstractType
      * @return string
      */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
     {
         return 'recommender_tags';
     }
@@ -83,6 +85,6 @@ class RecommenderTagsType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 }

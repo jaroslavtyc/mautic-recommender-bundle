@@ -12,6 +12,7 @@
 namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -39,7 +40,7 @@ class RecommenderTableOrderType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -50,45 +51,57 @@ class RecommenderTableOrderType extends AbstractType
 
         $fields = $options['fields'];
         unset($fields['mautic.lead.recommender_item'], $fields['mautic.lead.recommender_item_property_value']);
-        $builder->add('column', 'choice', [
-            'choices'     => $fields,
-            'expanded'    => false,
-            'multiple'    => false,
-            'label'       => 'mautic.report.report.label.filtercolumn',
-            'label_attr'  => ['class' => 'control-label'],
-            'required'    => false,
-            'attr'        => [
-                'class' => 'form-control filter-columns',
-            ],
-        ]);
+        $builder->add(
+            'column',
+            ChoiceType::class,
+            [
+                'choices' => $fields,
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'mautic.report.report.label.filtercolumn',
+                'label_attr' => ['class' => 'control-label'],
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control filter-columns',
+                ],
+            ]
+        );
 
         // Direction
-        $builder->add('direction', 'choice', [
-            'choices' => [
-                'DESC' => $this->translator->trans('mautic.report.report.label.tableorder_dir.desc'),
-                'ASC'  => $this->translator->trans('mautic.report.report.label.tableorder_dir.asc'),
-            ],
-            'expanded'    => false,
-            'multiple'    => false,
-            'label'       => 'mautic.core.order',
-            'label_attr'  => ['class' => 'control-label'],
-            'required'    => false,
-            'attr'        => [
-                'class' => 'form-control not-chosen',
-            ],
-        ]);
+        $builder->add(
+            'direction',
+            ChoiceType::class,
+            [
+                'choices' => [
+                    'DESC' => $this->translator->trans('mautic.report.report.label.tableorder_dir.desc'),
+                    'ASC' => $this->translator->trans('mautic.report.report.label.tableorder_dir.asc'),
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'mautic.core.order',
+                'label_attr' => ['class' => 'control-label'],
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control not-chosen',
+                ],
+            ]
+        );
 
-        $builder->add('function', 'choice', [
-            'choices'     => $this->getAvabilableFunctionChoices($column ?? null),
-            'expanded'    => false,
-            'multiple'    => false,
-            'label'       => 'mautic.report.function',
-            'label_attr'  => ['class' => 'control-label'],
-            'required'    => true,
-            'attr'        => [
-                'class' => 'form-control not-chosen',
-            ],
-        ]);
+        $builder->add(
+            'function',
+            ChoiceType::class,
+            [
+                'choices' => $this->getAvabilableFunctionChoices($column ?? null),
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'mautic.report.function',
+                'label_attr' => ['class' => 'control-label'],
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control not-chosen',
+                ],
+            ]
+        );
 
         $builder->get('column')->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -97,29 +110,29 @@ class RecommenderTableOrderType extends AbstractType
                 $column = $event->getData();
 
                 $this->setupAvailableFunctionChoices(
-                        $form->getParent(),
-                        $column
-                    );
+                    $form->getParent(),
+                    $column
+                );
             }
-            );
+        );
     }
 
-    public function getAvabilableFunctionChoices($column=null)
+    public function getAvabilableFunctionChoices($column = null)
     {
         $choices = [
-            ''       => $this->translator->trans('mautic.core.none'),
-            'COUNT'  => $this->translator->trans('mautic.report.report.label.aggregators.count'),
-            'AVG'    => $this->translator->trans('mautic.report.report.label.aggregators.avg'),
-            'SUM'    => $this->translator->trans('mautic.report.report.label.aggregators.sum'),
-            'MIN'    => $this->translator->trans('mautic.report.report.label.aggregators.min'),
-            'MAX'    => $this->translator->trans('mautic.report.report.label.aggregators.max'),
+            '' => $this->translator->trans('mautic.core.none'),
+            'COUNT' => $this->translator->trans('mautic.report.report.label.aggregators.count'),
+            'AVG' => $this->translator->trans('mautic.report.report.label.aggregators.avg'),
+            'SUM' => $this->translator->trans('mautic.report.report.label.aggregators.sum'),
+            'MIN' => $this->translator->trans('mautic.report.report.label.aggregators.min'),
+            'MAX' => $this->translator->trans('mautic.report.report.label.aggregators.max'),
         ];
 
         switch ($column) {
             case 'weight':
             case 'date_added':
                 unset($choices['']);
-            break;
+                break;
         }
 
         if (mb_ereg("date_added_\d+", $column)) {
@@ -145,17 +158,21 @@ class RecommenderTableOrderType extends AbstractType
         }
 
         // function
-        $form->add('function', 'choice', [
-            'choices'     => $choices,
-            'expanded'    => false,
-            'multiple'    => false,
-            'label'       => 'mautic.report.function',
-            'label_attr'  => ['class' => 'control-label'],
-            'required'    => true,
-            'attr'        => [
-                'class' => 'form-control not-chosen',
-            ],
-        ]);
+        $form->add(
+            'function',
+            ChoiceType::class,
+            [
+                'choices' => $choices,
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'mautic.report.function',
+                'label_attr' => ['class' => 'control-label'],
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control not-chosen',
+                ],
+            ]
+        );
     }
 
     /**

@@ -11,8 +11,11 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
+use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
@@ -24,7 +27,7 @@ class RecommenderPropertiesType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,18 +36,18 @@ class RecommenderPropertiesType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => [
-                    '2'  => '6',
-                    '3'  => '4',
-                    '4'  => '3',
-                    '6'  => '2',
+                    '2' => '6',
+                    '3' => '4',
+                    '4' => '3',
+                    '6' => '2',
                     '12' => '1',
                 ],
-                'expanded'    => false,
-                'multiple'    => false,
-                'label'       => 'mautic.recommender.form.columns',
-                'label_attr'  => ['class' => ''],
-                'required'    => true,
-                'data'        => isset($options['data']['columns']) ? $options['data']['columns'] : 3,
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'mautic.recommender.form.columns',
+                'label_attr' => ['class' => ''],
+                'required' => true,
+                'data' => isset($options['data']['columns']) ? $options['data']['columns'] : 3,
                 'constraints' => [
                     new NotBlank(
                         [
@@ -57,111 +60,111 @@ class RecommenderPropertiesType extends AbstractType
 
         $builder->add(
             'background',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.background.color',
+                'label' => 'mautic.recommender.form.background.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'font',
-            'choice',
+            ChoiceType::class,
             [
                 'choices' => [
-                    'Arial, Helvetica, sans-serif'                             => 'Arial',
-                    '\'Arial Black\', Gadget, sans-serif'                      => 'Arial Black',
-                    '\'Arial Narrow\', sans-serif'                             => 'Arial Narrow',
-                    'Century Gothic, sans-serif'                               => 'Century Gothic',
-                    'Copperplate / Copperplate Gothic Light, sans-serif'       => 'Copperplate Gothic Light',
-                    '\'Courier New\', Courier, monospace'                      => 'Courier New',
-                    'Georgia, Serif'                                           => 'Georgia',
-                    'Impact, Charcoal, sans-serif'                             => 'Impact',
-                    '\'Lucida Console\', Monaco, monospace'                    => 'Lucida Console',
-                    '\'Lucida Sans Unicode\', \'Lucida Grande\', sans-serif'   => 'Lucida Sans Unicode',
+                    'Arial, Helvetica, sans-serif' => 'Arial',
+                    '\'Arial Black\', Gadget, sans-serif' => 'Arial Black',
+                    '\'Arial Narrow\', sans-serif' => 'Arial Narrow',
+                    'Century Gothic, sans-serif' => 'Century Gothic',
+                    'Copperplate / Copperplate Gothic Light, sans-serif' => 'Copperplate Gothic Light',
+                    '\'Courier New\', Courier, monospace' => 'Courier New',
+                    'Georgia, Serif' => 'Georgia',
+                    'Impact, Charcoal, sans-serif' => 'Impact',
+                    '\'Lucida Console\', Monaco, monospace' => 'Lucida Console',
+                    '\'Lucida Sans Unicode\', \'Lucida Grande\', sans-serif' => 'Lucida Sans Unicode',
                     '\'Palatino Linotype\', \'Book Antiqua\', Palatino, serif' => 'Palatino',
-                    'Tahoma, Geneva, sans-serif'                               => 'Tahoma',
-                    '\'Times New Roman\', Times, serif'                        => 'Times New Roman',
-                    '\'Trebuchet MS\', Helvetica, sans-serif'                  => 'Trebuchet MS',
-                    'Verdana, Geneva, sans-serif'                              => 'Verdana',
+                    'Tahoma, Geneva, sans-serif' => 'Tahoma',
+                    '\'Times New Roman\', Times, serif' => 'Times New Roman',
+                    '\'Trebuchet MS\', Helvetica, sans-serif' => 'Trebuchet MS',
+                    'Verdana, Geneva, sans-serif' => 'Verdana',
                 ],
-                'label'      => 'mautic.focus.form.font',
+                'label' => 'mautic.focus.form.font',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'        => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'    => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'padding',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.padding',
+                'label' => 'mautic.recommender.form.padding',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'style',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'colBackground',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.background.color',
+                'label' => 'mautic.recommender.form.background.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'colPadding',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.padding',
+                'label' => 'mautic.recommender.form.padding',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'colStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
@@ -169,76 +172,76 @@ class RecommenderPropertiesType extends AbstractType
             'itemName',
             RecommenderTagsType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.name',
+                'label' => 'mautic.plugin.recommender.item.name',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemNameColor',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.color',
+                'label' => 'mautic.recommender.form.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemNameSize',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.font.size',
+                'label' => 'mautic.recommender.form.font.size',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemNamePadding',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.padding',
+                'label' => 'mautic.recommender.form.padding',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemNameBold',
-            'yesno_button_group',
+            YesNoButtonGroupType::class,
             [
                 'label' => 'mautic.plugin.recommender.bold',
-                'attr'  => [
+                'attr' => [
                 ],
-                'data'        => isset($options['data']['itemNameBold']) ?: false,
+                'data' => isset($options['data']['itemNameBold']) ?: false,
             ]
         );
 
         $builder->add(
             'itemNameStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
@@ -246,25 +249,25 @@ class RecommenderPropertiesType extends AbstractType
             'itemImage',
             RecommenderTagsType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.image',
+                'label' => 'mautic.plugin.recommender.item.image',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemImageStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
@@ -272,36 +275,36 @@ class RecommenderPropertiesType extends AbstractType
             'itemShortDescription',
             RecommenderTagsType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.short.description',
+                'label' => 'mautic.plugin.recommender.item.short.description',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemShortDescriptionBold',
-            'yesno_button_group',
+            YesNoButtonGroupType::class,
             [
                 'label' => 'mautic.plugin.recommender.bold',
-                'attr'  => [
+                'attr' => [
                 ],
-                'data'        => isset($options['data']['itemShortDescriptionBold']) ?: false,
+                'data' => isset($options['data']['itemShortDescriptionBold']) ?: false,
             ]
         );
 
         $builder->add(
             'itemShortDescriptionStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
@@ -309,130 +312,130 @@ class RecommenderPropertiesType extends AbstractType
             'itemUrl',
             RecommenderTagsType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.url',
+                'label' => 'mautic.plugin.recommender.item.url',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemAction',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.action',
+                'label' => 'mautic.plugin.recommender.item.action',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionBackground',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.background.color',
+                'label' => 'mautic.recommender.form.background.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionHover',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.background.hover.color',
+                'label' => 'mautic.recommender.form.background.hover.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionColor',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.color',
+                'label' => 'mautic.recommender.form.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionPadding',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.padding',
+                'label' => 'mautic.recommender.form.padding',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionRadius',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.radius',
+                'label' => 'mautic.recommender.form.radius',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionSize',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.font.size',
+                'label' => 'mautic.recommender.form.font.size',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemActionBold',
-            'yesno_button_group',
+            YesNoButtonGroupType::class,
             [
                 'label' => 'mautic.plugin.recommender.bold',
-                'attr'  => [
+                'attr' => [
                 ],
-                'data'        => isset($options['data']['itemActionBold']) ?: false,
+                'data' => isset($options['data']['itemActionBold']) ?: false,
             ]
         );
 
         $builder->add(
             'itemActionStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
@@ -440,76 +443,76 @@ class RecommenderPropertiesType extends AbstractType
             'itemPrice',
             RecommenderTagsType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.price',
+                'label' => 'mautic.plugin.recommender.item.price',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemPriceColor',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.color',
+                'label' => 'mautic.recommender.form.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemPricePadding',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.padding',
+                'label' => 'mautic.recommender.form.padding',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemPriceSize',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.font.size',
+                'label' => 'mautic.recommender.form.font.size',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemPriceBold',
-            'yesno_button_group',
+            YesNoButtonGroupType::class,
             [
                 'label' => 'mautic.plugin.recommender.bold',
-                'attr'  => [
+                'attr' => [
                 ],
-                'data'        => isset($options['data']['itemPriceBold']) ?: false,
+                'data' => isset($options['data']['itemPriceBold']) ?: false,
             ]
         );
 
         $builder->add(
             'itemPriceStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
@@ -517,74 +520,74 @@ class RecommenderPropertiesType extends AbstractType
             'itemOldPrice',
             RecommenderTagsType::class,
             [
-                'label'      => 'mautic.plugin.recommender.item.old.price',
+                'label' => 'mautic.plugin.recommender.item.old.price',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemOldPriceColor',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.color',
+                'label' => 'mautic.recommender.form.color',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                     'data-toggle' => 'color',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemOldPriceSize',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.recommender.form.font.size',
+                'label' => 'mautic.recommender.form.font.size',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemOldPriceStyle',
-            'text',
+            TextType::class,
             [
-                'label'      => 'mautic.plugin.recommender.style',
+                'label' => 'mautic.plugin.recommender.style',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'       => 'form-control',
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'required'   => false,
+                'required' => false,
             ]
         );
 
         $builder->add(
             'itemOldPriceBold',
-            'yesno_button_group',
+            YesNoButtonGroupType::class,
             [
                 'label' => 'mautic.plugin.recommender.bold',
-                'attr'  => [
+                'attr' => [
                 ],
-                'data'        => isset($options['data']['itemOldPriceBold']) ?: false,
+                'data' => isset($options['data']['itemOldPriceBold']) ?: false,
             ]
         );
 
         $builder->add(
             'header',
-            'textarea',
+            TextareaType::class,
             [
-                'label'      => 'mautic.plugin.recommender.header',
+                'label' => 'mautic.plugin.recommender.header',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'        => 'form-control editor editor-basic',
+                'attr' => [
+                    'class' => 'form-control editor editor-basic',
                 ],
                 'required' => false,
             ]
@@ -592,12 +595,12 @@ class RecommenderPropertiesType extends AbstractType
 
         $builder->add(
             'footer',
-            'textarea',
+            TextareaType::class,
             [
-                'label'      => 'mautic.plugin.recommender.footer',
+                'label' => 'mautic.plugin.recommender.footer',
                 'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'class'        => 'form-control editor editor-basic',
+                'attr' => [
+                    'class' => 'form-control editor editor-basic',
                 ],
                 'required' => false,
             ]
@@ -609,6 +612,12 @@ class RecommenderPropertiesType extends AbstractType
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
+    {
         return 'recommender_properties';
     }
+
 }
