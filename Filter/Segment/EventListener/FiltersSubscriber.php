@@ -48,13 +48,6 @@ class FiltersSubscriber implements EventSubscriberInterface
      */
     private $request;
 
-    /**
-     * FiltersSubscriber constructor.
-     *
-     * @param FilterFactory $segmentFilterFactory
-     * @param Choices $choices
-     * @param Decorator $decorator
-     */
     public function __construct(
         FilterFactory $segmentFilterFactory,
         Choices $choices,

@@ -1,7 +1,5 @@
 <?php
 
-use Doctrine\ORM\EntityRepository;
-
 return [
     'name' => 'RecommenderTemplate',
     'description' => 'Recomendations engine',
@@ -16,7 +14,6 @@ return [
                     'mautic.recommender.model.client',
                     'mautic.recommender.filter.recommender',
                     'mautic.recommender.filter.factory',
-                    'mautic.helper.integration',
                 ],
             ],
 
@@ -28,6 +25,7 @@ return [
                     'mautic.recommender.filter.fields.recommender',
                     'mautic.recommender.segment.decoration',
                     'mautic.helper.integration',
+                    'request',
                 ],
             ],
 
@@ -36,6 +34,7 @@ return [
                 'arguments' => [
                     'mautic.helper.core_parameters',
                     'mautic.helper.integration',
+                    'router',
                 ],
             ],
             'mautic.recommender.pagebundle.subscriber' => [
@@ -44,14 +43,13 @@ return [
                     'mautic.recommender.service.replacer',
                     'mautic.tracker.contact',
                     'mautic.helper.integration',
+                    'mautic.helper.token_builder.factory',
                 ],
             ],
             'mautic.recommender.token.replacer.subscriber' => [
                 'class' => MauticPlugin\MauticRecommenderBundle\EventListener\TokenReplacementSubscriber::class,
                 'arguments' => [
                     'mautic.recommender.service.replacer',
-                    'mautic.dynamicContent.model.dynamicContent',
-                    'mautic.focus.model.focus',
                     'mautic.helper.integration',
                 ],
             ],
@@ -59,6 +57,8 @@ return [
                 'class' => MauticPlugin\MauticRecommenderBundle\EventListener\LeadSubscriber::class,
                 'arguments' => [
                     'mautic.helper.integration',
+                    'doctrine.orm.entity_manager',
+                    'translator',
                 ],
             ],
             'mautic.recommender.emailbundle.subscriber' => [
@@ -67,12 +67,14 @@ return [
                     'mautic.recommender.helper',
                     'mautic.recommender.service.replacer',
                     'mautic.helper.integration',
+                    'mautic.helper.token_builder.factory',
                 ],
             ],
             'mautic.recommender.maintenance.subscriber' => [
-                'class' => 'MauticPlugin\MauticRecommenderBundle\EventListener\MaintenanceSubscriber',
+                'class' => MauticPlugin\MauticRecommenderBundle\EventListener\MaintenanceSubscriber::class,
                 'arguments' => [
                     'doctrine.dbal.default_connection',
+                    'translator',
                 ],
             ],
         ],

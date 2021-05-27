@@ -43,12 +43,6 @@ class PageSubscriber implements EventSubscriberInterface
      */
     protected $builderTokenHelperFactory;
 
-    /**
-     * PageSubscriber constructor.
-     *
-     * @param RecommenderTokenReplacer $recommenderTokenReplacer
-     * @param ContactTracker $contactTracker
-     */
     public function __construct(
         RecommenderTokenReplacer $recommenderTokenReplacer,
         ContactTracker $contactTracker,
