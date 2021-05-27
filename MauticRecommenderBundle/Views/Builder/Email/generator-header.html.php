@@ -9,6 +9,8 @@
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\Recommender $recommender */
+
 $class = 'recommender-template-'.$recommender->getId();
 if (!isset($preview)) {
     $preview = false;

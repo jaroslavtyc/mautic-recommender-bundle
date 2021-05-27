@@ -17,6 +17,7 @@ $view->extend('MauticCoreBundle:FormTheme:form_simple.html.php');
 $view['slots']->start('primaryFormContent');
 echo $view['assets']->includeStylesheet('plugins/MauticRecommenderBundle/Assets/css/recommender.css');
 echo $view['assets']->includeScript('plugins/MauticRecommenderBundle/Assets/js/recommender.js');
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplate $entity */
 /** @var \MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplate $recommender */
 $recommender = $entity;
 ?>
@@ -58,8 +59,8 @@ $recommender = $entity;
                                 'MauticRecommenderBundle:Builder\Page:generator.html.php',
                                 [
                                     'recommender' => $recommender,
-                                    'settings'    => $settings,
-                                    'preview'     => true,
+                                    'settings' => $settings,
+                                    'preview' => true,
                                 ]
                             );
                             ?>
@@ -200,8 +201,7 @@ $recommender = $entity;
                     <h4 class="panel-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                            href="#itemShortDescription" aria-expanded="false" aria-controls="itemShortDescription">
-                            <i class="fa fa-check <?php if (!empty($recommender->getProperties(
-                            )['itemShortDescription'])
+                            <i class="fa fa-check <?php if (!empty($recommender->getProperties()['itemShortDescription'])
                             ): echo 'text-success'; endif; ?>"></i> <?php echo $view['translator']->trans(
                                 'mautic.plugin.recommender.item.short.description'
                             ); ?>
@@ -377,7 +377,7 @@ $recommender = $entity;
                 if (!empty($properties)) {
                     foreach ($properties as $property) {
                         $body .= '<div class="col-sm-6">';
-                        $body .= '{{ '.$property['name'].' }}';
+                        $body .= '{{ ' . $property['name'] . ' }}';
                         $body .= '</div>';
                     }
                 }

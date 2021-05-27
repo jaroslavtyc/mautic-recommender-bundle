@@ -12,38 +12,39 @@
 if (!isset($preview)) {
     $preview = false;
 }
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\Recommender $recommender */
 
 echo $view->render(
     'MauticRecommenderBundle:Builder\Email:generator-header.html.php',
     [
         'recommender' => $recommender,
-        'settings'    => $settings,
-        'preview'     => $preview,
+        'settings' => $settings,
+        'preview' => $preview,
     ]
 );
 ?>
-</tr>
-            <?php for ($i = 0; $i < $recommender->getNumberOfItems(); ++$i): ?>
-                <?php
-                echo $view->render(
-                    'MauticRecommenderBundle:Builder\Email:generator-body.html.php',
-                    [
-                        'recommender' => $recommender,
-                        'settings'    => $settings,
-                        'preview'     => $preview,
-                        'index'       => $i,
-                    ]
-                );
-                ?>
-            <?php endfor; ?>
+    </tr>
+<?php for ($i = 0; $i < $recommender->getNumberOfItems(); ++$i): ?>
+    <?php
+    echo $view->render(
+        'MauticRecommenderBundle:Builder\Email:generator-body.html.php',
+        [
+            'recommender' => $recommender,
+            'settings' => $settings,
+            'preview' => $preview,
+            'index' => $i,
+        ]
+    );
+    ?>
+<?php endfor; ?>
 
 <?php
 echo $view->render(
     'MauticRecommenderBundle:Builder\Email:generator-footer.html.php',
     [
         'recommender' => $recommender,
-        'settings'    => $settings,
-        'preview'     => $preview,
+        'settings' => $settings,
+        'preview' => $preview,
     ]
 );
 ?>

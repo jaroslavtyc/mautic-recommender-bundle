@@ -9,7 +9,9 @@
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-$class = 'recommender-template-'.$recommender->getId();
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\Recommender $recommender */
+
+$class = 'recommender-template-' . $recommender->getId();
 
 ?>
 
@@ -25,7 +27,7 @@ $class = 'recommender-template-'.$recommender->getId();
     }
 
     .<?php echo $class ?> .recommender-col {
-        grid-column: span <?php echo    isset($recommender->getProperties()['columns']) ? $recommender->getProperties()['columns'] : 4; ?>;
+        grid-column: span<?php echo    isset($recommender->getProperties()['columns']) ? $recommender->getProperties()['columns'] : 4; ?>;
     <?php if (!empty($recommender->getProperties()['colBackground'])):    echo 'background-color:#'.$recommender->getProperties()['colBackground']; endif; ?>;
     <?php if (!empty($recommender->getProperties()['colPadding'])):    echo 'padding:'.$recommender->getProperties()['colPadding']; endif; ?>;
     <?php if (!empty($recommender->getProperties()['colStyle'])):    echo $recommender->getProperties()['colStyle']; endif; ?>;

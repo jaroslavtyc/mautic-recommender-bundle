@@ -13,6 +13,8 @@ if (!isset($preview)) {
     $preview = false;
 }
 
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\Recommender $recommender */
+
 echo $view->render(
     'MauticRecommenderBundle:Builder\Page:generator-header.html.php',
     [

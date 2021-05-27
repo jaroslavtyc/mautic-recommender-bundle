@@ -9,7 +9,9 @@
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-$class = 'recommender-template-'.$recommender->getId();
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\Recommender $recommender */
+
+$class = 'recommender-template-' . $recommender->getId();
 if (!isset($preview)) {
     $preview = false;
 }
@@ -22,8 +24,8 @@ echo $view->render(
     'MauticRecommenderBundle:Builder\Page:generator-css.html.php',
     [
         'recommender' => $recommender,
-        'settings'    => $settings,
-        'preview'     => $preview,
+        'settings' => $settings,
+        'preview' => $preview,
     ]
 );
 ?>
@@ -34,10 +36,10 @@ echo $view->render(
     if (isset($recommender->getProperties()['header'])) {
         if ($preview) {
             echo html_entity_decode($recommender->getProperties()['header']); ?>
-    <?php
+            <?php
         } else {
             echo $recommender->getProperties()['header']; ?>
-    <?php
+            <?php
         }
     }
     ?>

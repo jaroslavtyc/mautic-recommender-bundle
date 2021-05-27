@@ -9,6 +9,8 @@
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+/** @var \MauticPlugin\MauticRecommenderBundle\Entity\Recommender $recommender */
+
 if (!isset($preview)) {
     $preview = false;
 }
@@ -20,12 +22,12 @@ if (!isset($settings)) {
 if (isset($recommender->getProperties()['footer'])) {
     if ($preview) {
         echo html_entity_decode($recommender->getProperties()['footer']); ?>
-<?php
+        <?php
     } else {
         echo $recommender->getProperties()['footer']; ?>
-<?php
+        <?php
     }
 }
 ?>
-    </div>
+</div>
 </div>
