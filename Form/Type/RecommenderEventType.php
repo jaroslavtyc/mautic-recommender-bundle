@@ -11,6 +11,7 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
+use Mautic\CoreBundle\Form\Type\FormButtonsType;
 use MauticPlugin\MauticRecommenderBundle\Enum\EventTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -88,7 +89,7 @@ class RecommenderEventType extends AbstractType
 
         $builder->add(
             'buttons',
-            'form_buttons'
+            FormButtonsType::class
         );
     }
 

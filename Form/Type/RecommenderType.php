@@ -13,6 +13,7 @@ namespace MauticPlugin\MauticRecommenderBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use Mautic\CoreBundle\Form\DataTransformer\IdToEntityModelTransformer;
+use Mautic\CoreBundle\Form\Type\FormButtonsType;
 use Mautic\LeadBundle\Form\DataTransformer\FieldFilterTransformer;
 use Mautic\LeadBundle\Model\ListModel;
 use MauticPlugin\MauticRecommenderBundle\Event\FilterChoiceFormEvent;
@@ -312,7 +313,7 @@ class RecommenderType extends AbstractType
 
         $builder->add(
             'buttons',
-            'form_buttons'
+            FormButtonsType::class
         );
     }
 
