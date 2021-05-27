@@ -16,7 +16,7 @@ use Mautic\CoreBundle\Model\FormModel;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplate;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplateRepository;
 use MauticPlugin\MauticRecommenderBundle\Event\RecommenderEvent;
-use MauticPlugin\MauticRecommenderBundle\RecommenderEvents;
+use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
@@ -101,16 +101,16 @@ class TemplateModel extends FormModel implements AjaxLookupModelInterface
 
         switch ($action) {
             case 'pre_save':
-                $name = RecommenderEvents::PRE_SAVE;
+                $name = MauticRecommenderEvents::PRE_SAVE;
                 break;
             case 'post_save':
-                $name = RecommenderEvents::POST_SAVE;
+                $name = MauticRecommenderEvents::POST_SAVE;
                 break;
             case 'pre_delete':
-                $name = RecommenderEvents::PRE_DELETE;
+                $name = MauticRecommenderEvents::PRE_DELETE;
                 break;
             case 'post_delete':
-                $name = RecommenderEvents::POST_DELETE;
+                $name = MauticRecommenderEvents::POST_DELETE;
                 break;
             default:
                 return null;

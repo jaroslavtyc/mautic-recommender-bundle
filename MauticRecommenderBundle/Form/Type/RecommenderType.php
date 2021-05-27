@@ -19,7 +19,7 @@ use MauticPlugin\MauticRecommenderBundle\Event\FilterChoiceFormEvent;
 use MauticPlugin\MauticRecommenderBundle\Event\FilterFormEvent;
 use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Choices;
 use MauticPlugin\MauticRecommenderBundle\Model\RecommenderClientModel;
-use MauticPlugin\MauticRecommenderBundle\RecommenderEvents;
+use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -213,9 +213,9 @@ class RecommenderType extends AbstractType
         }
 
         $choices = [];
-        if ($this->dispatcher->hasListeners(RecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE)) {
+        if ($this->dispatcher->hasListeners(MauticRecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE)) {
             $choiceEvent = new FilterChoiceFormEvent();
-            $this->dispatcher->dispatch(RecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE, $choiceEvent);
+            $this->dispatcher->dispatch(MauticRecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE, $choiceEvent);
             $choices = $choiceEvent->getChoices('filter');
         }
         $builder->add(
@@ -266,9 +266,9 @@ class RecommenderType extends AbstractType
                 ->addModelTransformer($filterModalTransformer)
         );
 
-        if ($this->dispatcher->hasListeners(RecommenderEvents::ON_RECOMMENDER_FORM_FILTER_GENERATE)) {
+        if ($this->dispatcher->hasListeners(MauticRecommenderEvents::ON_RECOMMENDER_FORM_FILTER_GENERATE)) {
             $builderEvent = new FilterFormEvent($builder);
-            $this->dispatcher->dispatch(RecommenderEvents::ON_RECOMMENDER_FORM_FILTER_GENERATE, $builderEvent);
+            $this->dispatcher->dispatch(MauticRecommenderEvents::ON_RECOMMENDER_FORM_FILTER_GENERATE, $builderEvent);
             unset($builderEvent);
         }
 

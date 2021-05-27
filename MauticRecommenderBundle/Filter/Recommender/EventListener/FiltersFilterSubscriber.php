@@ -22,7 +22,7 @@ use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\RecommenderQueryBuil
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\FilterFactory;
 use MauticPlugin\MauticRecommenderBundle\Helper\SqlQuery;
 use MauticPlugin\MauticRecommenderBundle\Model\RecommenderClientModel;
-use MauticPlugin\MauticRecommenderBundle\RecommenderEvents;
+use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use MauticPlugin\MauticRecommenderBundle\Service\RecommenderToken;
 
 class FiltersFilterSubscriber extends CommonSubscriber
@@ -63,10 +63,10 @@ class FiltersFilterSubscriber extends CommonSubscriber
     public static function getSubscribedEvents()
     {
         return [
-            RecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE => [
+            MauticRecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE => [
                 ['onFilterFormChoicesGenerate', 1],
             ],
-            RecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS               => [
+            MauticRecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS               => [
                 ['onFilterResults', 5],
             ],
         ];

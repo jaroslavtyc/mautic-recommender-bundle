@@ -17,7 +17,7 @@ use MauticPlugin\MauticRecommenderBundle\Entity\Event;
 use MauticPlugin\MauticRecommenderBundle\Entity\EventRepository;
 use MauticPlugin\MauticRecommenderBundle\Entity\RecommenderTemplateRepository;
 use MauticPlugin\MauticRecommenderBundle\Event\RecommenderEvent;
-use MauticPlugin\MauticRecommenderBundle\RecommenderEvents;
+use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class RecommenderEventModel extends FormModel implements AjaxLookupModelInterface
@@ -106,16 +106,16 @@ class RecommenderEventModel extends FormModel implements AjaxLookupModelInterfac
 
         switch ($action) {
             case 'pre_save':
-                $name = RecommenderEvents::PRE_SAVE;
+                $name = MauticRecommenderEvents::PRE_SAVE;
                 break;
             case 'post_save':
-                $name = RecommenderEvents::POST_SAVE;
+                $name = MauticRecommenderEvents::POST_SAVE;
                 break;
             case 'pre_delete':
-                $name = RecommenderEvents::PRE_DELETE;
+                $name = MauticRecommenderEvents::PRE_DELETE;
                 break;
             case 'post_delete':
-                $name = RecommenderEvents::POST_DELETE;
+                $name = MauticRecommenderEvents::POST_DELETE;
                 break;
             default:
                 return null;

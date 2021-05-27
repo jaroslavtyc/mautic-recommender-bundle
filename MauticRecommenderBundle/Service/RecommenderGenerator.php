@@ -18,7 +18,7 @@ use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiCommands;
 use MauticPlugin\MauticRecommenderBundle\Entity\Recommender;
 use MauticPlugin\MauticRecommenderBundle\Event\FilterResultsEvent;
 use MauticPlugin\MauticRecommenderBundle\Model\TemplateModel;
-use MauticPlugin\MauticRecommenderBundle\RecommenderEvents;
+use MauticPlugin\MauticRecommenderBundle\MauticRecommenderEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RecommenderGenerator
@@ -104,9 +104,9 @@ class RecommenderGenerator
             return;
         }
 
-        if ($this->dispatcher->hasListeners(RecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS)) {
+        if ($this->dispatcher->hasListeners(MauticRecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS)) {
             $resultEvent = new FilterResultsEvent($recommenderToken);
-            $this->dispatcher->dispatch(RecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS, $resultEvent);
+            $this->dispatcher->dispatch(MauticRecommenderEvents::ON_RECOMMENDER_FILTER_RESULTS, $resultEvent);
         }
         $this->items =  $resultEvent->getItems();
 

@@ -15,7 +15,7 @@ namespace MauticPlugin\MauticRecommenderBundle;
  * Class RecommenderEvent
  * Events available for MauticRecommenderBundle.
  */
-final class RecommenderEvents
+final class MauticRecommenderEvents
 {
     /**
      * The mautic.recommender_pre_save event is thrown right before a asset is persisted.
