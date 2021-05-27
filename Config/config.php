@@ -25,7 +25,7 @@ return [
                     'mautic.recommender.filter.fields.recommender',
                     'mautic.recommender.segment.decoration',
                     'mautic.helper.integration',
-                    'request',
+                    'request_stack',
                 ],
             ],
 

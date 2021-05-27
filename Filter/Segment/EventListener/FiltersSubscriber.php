@@ -20,7 +20,7 @@ use MauticPlugin\MauticRecommenderBundle\Filter\Recommender\Choices;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\Decorator\Decorator;
 use MauticPlugin\MauticRecommenderBundle\Filter\Segment\FilterFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class FiltersSubscriber implements EventSubscriberInterface
 {
@@ -44,23 +44,23 @@ class FiltersSubscriber implements EventSubscriberInterface
      */
     protected $integrationHelper;
     /**
-     * @var Request
+     * @var RequestStack
      */
-    private $request;
+    private $requestStack;
 
     public function __construct(
         FilterFactory $segmentFilterFactory,
         Choices $choices,
         Decorator $decorator,
         IntegrationHelper $integrationHelper,
-        Request $request
+        RequestStack $requestStack
     )
     {
         $this->filterFactory = $segmentFilterFactory;
         $this->choices = $choices;
         $this->decorator = $decorator;
         $this->integrationHelper = $integrationHelper;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -108,7 +108,7 @@ class FiltersSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (in_array($this->request->attributes->get('_route'), ['mautic_segment_action', 'mautic_recommender_action'])) {
+        if (in_array($this->requestStack->getCurrentRequest()->attributes->get('_route'), ['mautic_segment_action', 'mautic_recommender_action'])) {
             $this->choices->addChoicesToEvent($event, 'recommender_event');
         }
     }
