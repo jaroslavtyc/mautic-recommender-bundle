@@ -154,8 +154,6 @@ return [
                     'event_dispatcher',
                     'doctrine.orm.entity_manager',
                     'translator',
-                    'mautic.lead.model.list',
-                    'mautic.recommender.model.client',
                     'mautic.recommender.filter.fields.recommender',
                     'router',
                 ],
