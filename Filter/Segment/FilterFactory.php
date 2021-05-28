@@ -63,6 +63,7 @@ class FilterFactory
             $contactSegmentFilterCrate = new ContactSegmentFilterCrate($filter);
         }
 
+        /** @var FilterQueryBuilderInterface $filterQueryBuilder */
         $filterQueryBuilder = $this->container->get($decorator->getQueryType($contactSegmentFilterCrate));
 
         return new ContactSegmentFilter(

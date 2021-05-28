@@ -209,6 +209,7 @@ return [
                 'arguments' => [
                     '@service_container',
                     'mautic.lead.model.lead_segment_schema_cache',
+                    'mautic.recommender.segment.decoration',
                 ],
             ],
             'mautic.recommender.filter.fields.segment' => [
