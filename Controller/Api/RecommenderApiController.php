@@ -12,7 +12,6 @@
 namespace MauticPlugin\MauticRecommenderBundle\Controller\Api;
 
 use Mautic\ApiBundle\Controller\CommonApiController;
-use MauticPlugin\MauticRecommenderBundle\Api\Service\ApiCommands;
 use MauticPlugin\MauticRecommenderBundle\Events\Processor;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -64,7 +63,6 @@ class RecommenderApiController extends CommonApiController
 
         try {
             $this->processor->process($eventDetail);
-            /** @var ApiCommands $apiCommands */
             $view = $this->view(['success' => '1'], Response::HTTP_OK);
 
             return $this->handleView($view);
