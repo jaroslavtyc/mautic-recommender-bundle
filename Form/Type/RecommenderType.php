@@ -247,8 +247,8 @@ class RecommenderType extends AbstractType
                 'filters',
                 CollectionType::class,
                 [
-                    'type' => RecommenderFilterType::class,
-                    'options' => [
+                    'entry_type' => RecommenderFilterType::class,
+                    'entry_options' => [
                         'fields' => $this->fieldChoices,
                     ],
                     'error_bubbling' => false,
