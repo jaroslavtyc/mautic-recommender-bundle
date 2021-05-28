@@ -11,7 +11,6 @@
 
 namespace MauticPlugin\MauticRecommenderBundle\EventListener;
 
-use Mautic\CoreBundle\Helper\BuilderTokenHelper;
 use Mautic\CoreBundle\Helper\BuilderTokenHelperFactory;
 use Mautic\LeadBundle\Tracker\ContactTracker;
 use Mautic\PageBundle\Event as Events;
@@ -78,7 +77,7 @@ class PageSubscriber implements EventSubscriberInterface
         }
 
         if ($event->tokensRequested(RecommenderHelper::$recommenderRegex)) {
-            $tokenHelper = new BuilderTokenHelper($this->factory, 'recommender');
+            $tokenHelper = $this->builderTokenHelperFactory->getBuilderTokenHelper('recommender');
             $event->addTokensFromHelper($tokenHelper, RecommenderHelper::$recommenderRegex, 'name', 'id', true);
         }
     }
