@@ -53,10 +53,7 @@ class FiltersFilterSubscriber implements EventSubscriberInterface
         $this->filterFactory = $filterFactory;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             MauticRecommenderEvents::ON_RECOMMENDER_FILTER_FORM_CHOICES_GENERATE => [
@@ -68,9 +65,6 @@ class FiltersFilterSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param FilterChoiceFormEvent $event
-     */
     public function onFilterFormChoicesGenerate(FilterChoiceFormEvent $event)
     {
         $event->addChoice('filter', 'mautic.plugin.recommender.form.type.filters', 'filters');

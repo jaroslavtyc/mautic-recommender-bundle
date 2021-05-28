@@ -52,7 +52,7 @@ class ListTemplatesType extends AbstractType
                 $choices = [];
                 /** @var Event $event */
                 foreach ($events as $event) {
-                    $choices[$event->getId()] = $event->getName();
+                    $choices[$event->getName()] = $event->getId();
                 }
 
                 return $choices;
